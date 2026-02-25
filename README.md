@@ -87,6 +87,8 @@ Use `docker-compose.prod.yml` with `infra/nginx/nginx.conf`.
 docker compose -f docker-compose.prod.yml up -d --build
 ```
 
+For full VPS deployment steps and automation scripts, see `DEPLOYMENT.md`.
+
 ## Testing
 
 Run all tests:
