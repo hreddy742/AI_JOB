@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: apex_apply
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+      typesense:
+        image: typesense/typesense:0.25.1
+        ports:
+          - 8108:8108
+        options: >-
+          --health-cmd "wget -qO- http://localhost:8108/health || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+        volumes:
+          - /tmp/typesense:/data
+        command: --data-dir /data --api-key=apex-apply-local-key --enable-cors
+
+    defaults:
+      run:
+        working-directory: .
+
+    env:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/apex_apply
+      REDIS_URL: redis://localhost:6379/0
+      SECRET_KEY: ci-secret-key
+      PYTHONPATH: apps/api
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      TYPESENSE_HOST: localhost
+      TYPESENSE_PORT: 8108
+      TYPESENSE_API_KEY: apex-apply-local-key
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r apps/api/requirements.txt
+          pip install pytest pytest-asyncio
+
+      - name: Check Typesense schema creation
+        run: python scripts/seed_typesense.py
+
+      - name: Run copilot tests
+        run: pytest tests/api/test_copilot.py -v
+
+      - name: Run referral tests
+        run: pytest tests/api/test_referral.py -v
+
+      - name: Run full test suite
+        run: pytest -v

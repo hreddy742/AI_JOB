@@ -1,0 +1,406 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "../styles/tokens.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  line-height: var(--leading-normal);
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s var(--ease-smooth);
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.apex-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-base);
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at -20% -10%, rgba(224, 203, 169, 0.34), transparent 62%),
+    radial-gradient(900px 420px at 100% 0%, rgba(37, 99, 235, 0.10), transparent 58%),
+    linear-gradient(180deg, var(--color-bg) 0%, #f5f1ea 100%);
+}
+
+.apex-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(2px);
+  opacity: 0.48;
+  animation: orb 18s ease-in-out infinite;
+}
+
+.apex-orb-1 {
+  width: 360px;
+  height: 360px;
+  top: -120px;
+  left: -80px;
+  --tx: 40px;
+  --ty: 35px;
+  --s: 1.08;
+  animation-delay: 0s;
+  background: radial-gradient(circle at 30% 30%, rgba(250, 228, 189, 0.65), rgba(250, 228, 189, 0.08));
+}
+
+.apex-orb-2 {
+  width: 420px;
+  height: 420px;
+  right: -120px;
+  top: 20%;
+  --tx: -45px;
+  --ty: 28px;
+  --s: 1.06;
+  animation-delay: 6s;
+  animation-duration: 22s;
+  background: radial-gradient(circle at 45% 45%, rgba(37, 99, 235, 0.20), rgba(37, 99, 235, 0.03));
+}
+
+.apex-orb-3 {
+  width: 300px;
+  height: 300px;
+  left: 32%;
+  bottom: -140px;
+  --tx: -34px;
+  --ty: -20px;
+  --s: 1.12;
+  animation-delay: 12s;
+  animation-duration: 14s;
+  background: radial-gradient(circle at 55% 55%, rgba(245, 190, 95, 0.35), rgba(245, 190, 95, 0.06));
+}
+
+.display-hero {
+  font: 400 var(--text-4xl) / 1.1 var(--font-display);
+  letter-spacing: -0.04em;
+  color: var(--color-text-primary);
+}
+
+.display-xl {
+  font: 400 var(--text-3xl) / 1.15 var(--font-display);
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+}
+
+.display-lg {
+  font: 400 var(--text-2xl) / 1.2 var(--font-display);
+  letter-spacing: -0.025em;
+  color: var(--color-text-primary);
+}
+
+.display-md {
+  font: 500 var(--text-xl) / 1.25 var(--font-display);
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+.display-sm {
+  font: 500 var(--text-lg) / 1.3 var(--font-display);
+  letter-spacing: -0.015em;
+  color: var(--color-text-primary);
+}
+
+.body-xl {
+  font: 400 16px / 1.7 var(--font-body);
+  color: var(--color-text-primary);
+}
+
+.body-lg {
+  font: 400 14.5px / 1.65 var(--font-body);
+  color: var(--color-text-primary);
+}
+
+.body-md {
+  font: 400 14px / 1.6 var(--font-body);
+  color: var(--color-text-primary);
+}
+
+.body-sm {
+  font: 400 13px / 1.55 var(--font-body);
+  color: var(--color-text-secondary);
+}
+
+.body-xs {
+  font: 400 11.5px / 1.5 var(--font-body);
+  color: var(--color-text-muted);
+}
+
+.label-lg {
+  font: 600 12px / 1 var(--font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.label-md {
+  font: 600 11px / 1 var(--font-body);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.label-sm {
+  font: 500 10px / 1 var(--font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.mono-lg {
+  font: 500 14px / 1 var(--font-mono);
+  color: var(--color-text-primary);
+}
+
+.mono-md {
+  font: 500 12px / 1 var(--font-mono);
+  color: var(--color-text-secondary);
+}
+
+.mono-sm {
+  font: 400 11px / 1 var(--font-mono);
+  color: var(--color-text-muted);
+}
+
+.number-hero {
+  font: 300 var(--text-4xl) / 1 var(--font-display);
+  letter-spacing: -0.04em;
+}
+
+.number-lg {
+  font: 400 32px / 1 var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+.number-md {
+  font: 400 24px / 1 var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.apex-app-shell {
+  position: relative;
+  z-index: var(--z-raised);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.apex-main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 36px 40px;
+  position: relative;
+  z-index: var(--z-raised);
+}
+
+.apex-glass-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-surface-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+}
+
+.apex-glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.9) 50%, transparent 100%);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .apex-glass-card {
+    background: rgba(255, 255, 255, 0.96);
+  }
+}
+
+.apex-fade-up {
+  animation: fadeUp 0.45s var(--ease-smooth) both;
+}
+
+.apex-skeleton {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.05) 25%, rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0.05) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scalePop {
+  0% {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(1.5deg);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes orb {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(var(--tx, 30px), var(--ty, -20px)) scale(var(--s, 1.08));
+  }
+}
+
+@media (max-width: 1280px) {
+  .apex-main {
+    padding: 36px 32px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .apex-main {
+    padding: 28px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  html,
+  body {
+    overflow: auto;
+  }
+
+  .apex-main {
+    padding: 20px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

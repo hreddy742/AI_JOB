@@ -1,0 +1,156 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: apex_apply
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d apex_apply"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  chromadb:
+    image: chromadb/chroma:0.5.23
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+  typesense:
+    image: typesense/typesense:0.25.1
+    restart: unless-stopped
+    command: "--data-dir /data --api-key=apex-apply-local-key --enable-cors"
+    ports:
+      - "8108:8108"
+    volumes:
+      - typesense_data:/data
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  api:
+    build: ../apps/api
+    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: dev-secret
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_STARTTLS: ${SMTP_STARTTLS:-false}
+      SMTP_USE_TLS: ${SMTP_USE_TLS:-false}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Apex Apply}
+      SMTP_FROM_EMAIL: ${SMTP_FROM_EMAIL:-no-reply@apexapply.local}
+      RATE_LIMIT_LOGIN_MAX: 10
+      RATE_LIMIT_LOGIN_WINDOW_SECONDS: 0
+      RATE_LIMIT_REGISTER_MAX: 0
+      RATE_LIMIT_REGISTER_WINDOW_SECONDS: 0
+      MAX_FAILED_LOGINS: 10
+      ACCOUNT_LOCKOUT_MINUTES: 0
+      ENABLE_BACKGROUND_INGESTION: "false"
+      INGESTION_INTERVAL_SECONDS: 3600
+      ENABLE_JOB_EMBEDDINGS: "false"
+      PYTHONPATH: /app
+    ports:
+      - "8001:8001"
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+      ollama:
+        condition: service_started
+      minio:
+        condition: service_started
+      typesense:
+        condition: service_started
+      mailpit:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8001/health', timeout=3)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "rm -rf /app/${NEXT_DIST_DIR:-.next} /app/node_modules/.cache && npm install && npm run dev"
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: /backend
+      INTERNAL_API_BASE_URL: http://api:8001
+      NEXT_DIST_DIR: .next-docker
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../apps/web:/app
+      - web_node_modules:/app/node_modules
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:3000/login').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))\""]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 45s
+
+volumes:
+  postgres_data:
+  minio_data:
+  typesense_data:
+  web_node_modules:

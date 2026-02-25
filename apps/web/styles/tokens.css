@@ -1,0 +1,110 @@
+:root {
+  --color-bg: #F8F6F2;
+  --color-bg-alt: #F2EFE9;
+  --color-bg-sunken: #EDE9E1;
+
+  --color-surface-1: rgba(255, 255, 255, 0.60);
+  --color-surface-2: rgba(255, 255, 255, 0.75);
+  --color-surface-3: rgba(255, 255, 255, 0.88);
+  --color-surface-hover: rgba(255, 255, 255, 0.82);
+
+  --color-border: rgba(255, 255, 255, 0.85);
+  --color-border-sub: rgba(0, 0, 0, 0.07);
+  --color-border-focus: rgba(37, 99, 235, 0.45);
+
+  --color-text-primary: #1A1814;
+  --color-text-secondary: #6B6760;
+  --color-text-muted: #A8A5A0;
+  --color-text-disabled: #C5C2BC;
+
+  --color-accent: #2563EB;
+  --color-accent-hover: #1D4ED8;
+  --color-accent-active: #1E40AF;
+  --color-accent-soft: rgba(37, 99, 235, 0.10);
+  --color-accent-glow: rgba(37, 99, 235, 0.20);
+
+  --color-success: #16A34A;
+  --color-success-soft: rgba(22, 163, 74, 0.10);
+  --color-warning: #D97706;
+  --color-warning-soft: rgba(217, 119, 6, 0.10);
+  --color-error: #DC2626;
+  --color-error-soft: rgba(220, 38, 38, 0.10);
+  --color-purple: #7C3AED;
+  --color-purple-soft: rgba(124, 58, 237, 0.10);
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-body: var(--font-dm-sans), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono', 'Fira Code', monospace;
+
+  --text-xs: 11px;
+  --text-sm: 12.5px;
+  --text-base: 14px;
+  --text-md: 15.5px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+  --text-3xl: 36px;
+  --text-4xl: 48px;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.7;
+
+  --tracking-tight: -0.03em;
+  --tracking-normal: -0.01em;
+  --tracking-wide: 0.06em;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.04), 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.05), 0 16px 48px rgba(0, 0, 0, 0.10);
+  --shadow-glass: 0 4px 24px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  --shadow-glass-lg: 0 8px 40px rgba(0, 0, 0, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --shadow-accent: 0 4px 16px rgba(37, 99, 235, 0.28);
+
+  --blur-sm: blur(8px) saturate(140%);
+  --blur-md: blur(20px) saturate(180%);
+  --blur-lg: blur(40px) saturate(200%);
+
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  --ease-smooth: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --transition-fast: all 0.15s var(--ease-smooth);
+  --transition-base: all 0.22s var(--ease-smooth);
+  --transition-slow: all 0.35s var(--ease-smooth);
+  --transition-spring: all 0.4s var(--ease-spring);
+
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  --bp-2xl: 1536px;
+}

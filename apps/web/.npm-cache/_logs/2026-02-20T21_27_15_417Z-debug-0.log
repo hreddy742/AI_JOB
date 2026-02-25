@@ -1,0 +1,474 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.2
+2 info using node@v24.13.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\hvred\Documents\Ai-Projects\Ai_Job\apex-apply\apps\web\.npmrc
+5 silly config load:file:C:\Users\hvred\.npmrc
+6 silly config load:file:C:\Users\hvred\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install
+8 verbose argv "install" "--cache" ".npm-cache" "--loglevel" "verbose"
+9 verbose logfile logs-max:10 dir:C:\Users\hvred\Documents\Ai-Projects\Ai_Job\apex-apply\apps\web\.npm-cache\_logs\2026-02-20T21_27_15_417Z-
+10 verbose logfile C:\Users\hvred\Documents\Ai-Projects\Ai_Job\apex-apply\apps\web\.npm-cache\_logs\2026-02-20T21_27_15_417Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 verbose shrinkwrap failed to load node_modules/.package-lock.json out of date, updated: node_modules
+14 silly idealTree buildDeps
+15 silly reify mark retired [
+15 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\autoprefixer'
+15 silly reify ]
+16 silly reify mark retired [
+16 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\baseline-browser-mapping'
+16 silly reify ]
+17 silly reify mark retired [
+17 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\browserslist'
+17 silly reify ]
+18 silly reify mark retired [
+18 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\cssesc'
+18 silly reify ]
+19 silly reify mark retired [
+19 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\framer-motion'
+19 silly reify ]
+20 silly reify mark retired [
+20 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\jiti'
+20 silly reify ]
+21 silly reify mark retired [
+21 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\loose-envify'
+21 silly reify ]
+22 silly reify mark retired [
+22 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\lucide-react'
+22 silly reify ]
+23 silly reify mark retired [
+23 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\motion-dom'
+23 silly reify ]
+24 silly reify mark retired [
+24 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\motion-utils'
+24 silly reify ]
+25 silly reify mark retired [
+25 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\nanoid'
+25 silly reify ]
+26 silly reify mark retired [
+26 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\next'
+26 silly reify ]
+27 silly reify mark retired [
+27 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\resolve'
+27 silly reify ]
+28 silly reify mark retired [
+28 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\sucrase'
+28 silly reify ]
+29 silly reify mark retired [
+29 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\tabbable'
+29 silly reify ]
+30 silly reify mark retired [
+30 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\tailwindcss'
+30 silly reify ]
+31 silly reify mark retired [
+31 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\typescript'
+31 silly reify ]
+32 silly reify mark retired [
+32 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\update-browserslist-db'
+32 silly reify ]
+33 silly reify mark retired [
+33 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\use-sync-external-store'
+33 silly reify ]
+34 silly reify mark retired [
+34 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\core'
+34 silly reify ]
+35 silly reify mark retired [
+35 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\dom'
+35 silly reify ]
+36 silly reify mark retired [
+36 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\react-dom'
+36 silly reify ]
+37 silly reify mark retired [
+37 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\utils'
+37 silly reify ]
+38 silly reify mark retired [
+38 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\react'
+38 silly reify ]
+39 silly reify mark retired [
+39 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@headlessui\\react'
+39 silly reify ]
+40 silly reify mark retired [
+40 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@next\\swc-win32-x64-msvc'
+40 silly reify ]
+41 silly reify mark retired [
+41 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\focus'
+41 silly reify ]
+42 silly reify mark retired [
+42 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\interactions'
+42 silly reify ]
+43 silly reify mark retired [
+43 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\ssr'
+43 silly reify ]
+44 silly reify mark retired [
+44 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\utils'
+44 silly reify ]
+45 silly reify mark retired [
+45 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-stately\\flags'
+45 silly reify ]
+46 silly reify mark retired [
+46 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-stately\\utils'
+46 silly reify ]
+47 silly reify mark retired [
+47 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-types\\shared'
+47 silly reify ]
+48 silly reify mark retired [
+48 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@tanstack\\react-virtual'
+48 silly reify ]
+49 silly reify mark retired [
+49 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@tanstack\\virtual-core'
+49 silly reify ]
+50 silly reify moves {
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\autoprefixer': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.autoprefixer-r5PWledB',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\baseline-browser-mapping': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.baseline-browser-mapping-1pTsPacU',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\browserslist': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.browserslist-OFFZnljE',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\cssesc': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.cssesc-HU4fE1OC',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\framer-motion': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.framer-motion-mtChXIDY',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\jiti': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.jiti-07ogGpbK',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\loose-envify': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.loose-envify-wAf4nmjN',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\lucide-react': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.lucide-react-PqBiWw40',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\motion-dom': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.motion-dom-IzEcrJCE',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\motion-utils': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.motion-utils-NMAE8yTw',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\nanoid': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.nanoid-MzBGxDcq',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\next': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.next-o0fsJSb7',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\resolve': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.resolve-hgk1s6CO',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\sucrase': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.sucrase-mubRY4yK',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\tabbable': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.tabbable-JRzrsTJ1',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\tailwindcss': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.tailwindcss-IquP1Oot',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\typescript': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.typescript-X4mJaxOG',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\update-browserslist-db': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.update-browserslist-db-A3U4beBw',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\use-sync-external-store': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\.use-sync-external-store-EOgOHn6Q',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\core': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\.core-J1G6NkA3',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\dom': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\.dom-dQIk8eZD',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\react-dom': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\.react-dom-IUR4pVAp',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\utils': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\.utils-ymz2kE3J',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\react': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@floating-ui\\.react-FbsuQr2f',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@headlessui\\react': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@headlessui\\.react-JhcSxqiJ',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@next\\swc-win32-x64-msvc': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@next\\.swc-win32-x64-msvc-yKi2QXK8',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\focus': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\.focus-RQYYNoju',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\interactions': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\.interactions-R9EGpHlr',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\ssr': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\.ssr-6zWb3UjG',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\utils': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-aria\\.utils-iDvBJsK1',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-stately\\flags': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-stately\\.flags-CBdNGMri',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-stately\\utils': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-stately\\.utils-Gn7jRBBN',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-types\\shared': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@react-types\\.shared-ZAJrwAR7',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@tanstack\\react-virtual': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@tanstack\\.react-virtual-c5Zz9HVF',
+50 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@tanstack\\virtual-core': 'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@tanstack\\.virtual-core-krv4DwoS'
+50 silly reify }
+51 silly audit bulk request {
+51 silly audit   '@alloc/quick-lru': [ '5.2.0' ],
+51 silly audit   '@babel/runtime': [ '7.28.6' ],
+51 silly audit   '@dnd-kit/accessibility': [ '3.1.1' ],
+51 silly audit   '@dnd-kit/core': [ '6.3.1' ],
+51 silly audit   '@dnd-kit/sortable': [ '10.0.0' ],
+51 silly audit   '@dnd-kit/utilities': [ '3.2.2' ],
+51 silly audit   '@floating-ui/core': [ '1.7.4' ],
+51 silly audit   '@floating-ui/dom': [ '1.7.5' ],
+51 silly audit   '@floating-ui/react': [ '0.26.28' ],
+51 silly audit   '@floating-ui/react-dom': [ '2.1.7' ],
+51 silly audit   '@floating-ui/utils': [ '0.2.10' ],
+51 silly audit   '@headlessui/react': [ '2.2.9' ],
+51 silly audit   '@jridgewell/gen-mapping': [ '0.3.13' ],
+51 silly audit   '@jridgewell/resolve-uri': [ '3.1.2' ],
+51 silly audit   '@jridgewell/sourcemap-codec': [ '1.5.5' ],
+51 silly audit   '@jridgewell/trace-mapping': [ '0.3.31' ],
+51 silly audit   '@next/env': [ '14.2.24' ],
+51 silly audit   '@next/swc-darwin-arm64': [ '14.2.24' ],
+51 silly audit   '@next/swc-darwin-x64': [ '14.2.24' ],
+51 silly audit   '@next/swc-linux-arm64-gnu': [ '14.2.24' ],
+51 silly audit   '@next/swc-linux-arm64-musl': [ '14.2.24' ],
+51 silly audit   '@next/swc-linux-x64-gnu': [ '14.2.24' ],
+51 silly audit   '@next/swc-linux-x64-musl': [ '14.2.24' ],
+51 silly audit   '@next/swc-win32-arm64-msvc': [ '14.2.24' ],
+51 silly audit   '@next/swc-win32-ia32-msvc': [ '14.2.24' ],
+51 silly audit   '@next/swc-win32-x64-msvc': [ '14.2.24' ],
+51 silly audit   '@nodelib/fs.scandir': [ '2.1.5' ],
+51 silly audit   '@nodelib/fs.stat': [ '2.0.5' ],
+51 silly audit   '@nodelib/fs.walk': [ '1.2.8' ],
+51 silly audit   '@react-aria/focus': [ '3.21.4' ],
+51 silly audit   '@react-aria/interactions': [ '3.27.0' ],
+51 silly audit   '@react-aria/ssr': [ '3.9.10' ],
+51 silly audit   '@react-aria/utils': [ '3.33.0' ],
+51 silly audit   '@react-stately/flags': [ '3.1.2' ],
+51 silly audit   '@react-stately/utils': [ '3.11.0' ],
+51 silly audit   '@react-types/shared': [ '3.33.0' ],
+51 silly audit   '@swc/counter': [ '0.1.3' ],
+51 silly audit   '@swc/helpers': [ '0.5.5' ],
+51 silly audit   '@tanstack/query-core': [ '5.90.20' ],
+51 silly audit   '@tanstack/react-query': [ '5.90.21' ],
+51 silly audit   '@tanstack/react-virtual': [ '3.13.18' ],
+51 silly audit   '@tanstack/virtual-core': [ '3.13.18' ],
+51 silly audit   '@types/d3-array': [ '3.2.2' ],
+51 silly audit   '@types/d3-color': [ '3.1.3' ],
+51 silly audit   '@types/d3-ease': [ '3.0.2' ],
+51 silly audit   '@types/d3-interpolate': [ '3.0.4' ],
+51 silly audit   '@types/d3-path': [ '3.1.1' ],
+51 silly audit   '@types/d3-scale': [ '4.0.9' ],
+51 silly audit   '@types/d3-shape': [ '3.1.8' ],
+51 silly audit   '@types/d3-time': [ '3.0.4' ],
+51 silly audit   '@types/d3-timer': [ '3.0.2' ],
+51 silly audit   '@types/node': [ '22.19.11' ],
+51 silly audit   '@types/prop-types': [ '15.7.15' ],
+51 silly audit   '@types/react': [ '18.3.28' ],
+51 silly audit   '@types/react-dom': [ '18.3.7' ],
+51 silly audit   'any-promise': [ '1.3.0' ],
+51 silly audit   anymatch: [ '3.1.3' ],
+51 silly audit   arg: [ '5.0.2' ],
+51 silly audit   autoprefixer: [ '10.4.24' ],
+51 silly audit   'baseline-browser-mapping': [ '2.10.0' ],
+51 silly audit   'binary-extensions': [ '2.3.0' ],
+51 silly audit   braces: [ '3.0.3' ],
+51 silly audit   browserslist: [ '4.28.1' ],
+51 silly audit   busboy: [ '1.6.0' ],
+51 silly audit   'camelcase-css': [ '2.0.1' ],
+51 silly audit   'caniuse-lite': [ '1.0.30001770' ],
+51 silly audit   chokidar: [ '3.6.0' ],
+51 silly audit   'glob-parent': [ '5.1.2', '6.0.2' ],
+51 silly audit   'client-only': [ '0.0.1' ],
+51 silly audit   clsx: [ '2.1.1' ],
+51 silly audit   commander: [ '4.1.1' ],
+51 silly audit   cssesc: [ '3.0.0' ],
+51 silly audit   csstype: [ '3.2.3' ],
+51 silly audit   'd3-array': [ '3.2.4' ],
+51 silly audit   'd3-color': [ '3.1.0' ],
+51 silly audit   'd3-ease': [ '3.0.1' ],
+51 silly audit   'd3-format': [ '3.1.2' ],
+51 silly audit   'd3-interpolate': [ '3.0.1' ],
+51 silly audit   'd3-path': [ '3.1.0' ],
+51 silly audit   'd3-scale': [ '4.0.2' ],
+51 silly audit   'd3-shape': [ '3.2.0' ],
+51 silly audit   'd3-time': [ '3.1.0' ],
+51 silly audit   'd3-time-format': [ '4.1.0' ],
+51 silly audit   'd3-timer': [ '3.0.1' ],
+51 silly audit   'decimal.js-light': [ '2.5.1' ],
+51 silly audit   didyoumean: [ '1.2.2' ],
+51 silly audit   dlv: [ '1.1.3' ],
+51 silly audit   'dom-helpers': [ '5.2.1' ],
+51 silly audit   'electron-to-chromium': [ '1.5.286' ],
+51 silly audit   escalade: [ '3.2.0' ],
+51 silly audit   eventemitter3: [ '4.0.7' ],
+51 silly audit   'fast-equals': [ '5.4.0' ],
+51 silly audit   'fast-glob': [ '3.3.3' ],
+51 silly audit   fastq: [ '1.20.1' ],
+51 silly audit   'fill-range': [ '7.1.1' ],
+51 silly audit   'fraction.js': [ '5.3.4' ],
+51 silly audit   'framer-motion': [ '11.18.2' ],
+51 silly audit   fsevents: [ '2.3.3' ],
+51 silly audit   'function-bind': [ '1.1.2' ],
+51 silly audit   'graceful-fs': [ '4.2.11' ],
+51 silly audit   hasown: [ '2.0.2' ],
+51 silly audit   internmap: [ '2.0.3' ],
+51 silly audit   'is-binary-path': [ '2.1.0' ],
+51 silly audit   'is-core-module': [ '2.16.1' ],
+51 silly audit   'is-extglob': [ '2.1.1' ],
+51 silly audit   'is-glob': [ '4.0.3' ],
+51 silly audit   'is-number': [ '7.0.0' ],
+51 silly audit   jiti: [ '1.21.7' ],
+51 silly audit   'js-tokens': [ '4.0.0' ],
+51 silly audit   lilconfig: [ '3.1.3' ],
+51 silly audit   'lines-and-columns': [ '1.2.4' ],
+51 silly audit   lodash: [ '4.17.23' ],
+51 silly audit   'loose-envify': [ '1.4.0' ],
+51 silly audit   'lucide-react': [ '0.511.0' ],
+51 silly audit   merge2: [ '1.4.1' ],
+51 silly audit   micromatch: [ '4.0.8' ],
+51 silly audit   'motion-dom': [ '11.18.1' ],
+51 silly audit   'motion-utils': [ '11.18.1' ],
+51 silly audit   mz: [ '2.7.0' ],
+51 silly audit   nanoid: [ '3.3.11' ],
+51 silly audit   next: [ '14.2.24' ],
+51 silly audit   postcss: [ '8.4.31', '8.5.6' ],
+51 silly audit   'node-releases': [ '2.0.27' ],
+51 silly audit   'normalize-path': [ '3.0.0' ],
+51 silly audit   'object-assign': [ '4.1.1' ],
+51 silly audit   'object-hash': [ '3.0.0' ],
+51 silly audit   'path-parse': [ '1.0.7' ],
+51 silly audit   picocolors: [ '1.1.1' ],
+51 silly audit   picomatch: [ '2.3.1', '4.0.3' ],
+51 silly audit   pify: [ '2.3.0' ],
+51 silly audit   pirates: [ '4.0.7' ],
+51 silly audit   'postcss-import': [ '15.1.0' ],
+51 silly audit   'postcss-js': [ '4.1.0' ],
+51 silly audit   'postcss-load-config': [ '6.0.1' ],
+51 silly audit   'postcss-nested': [ '6.2.0' ],
+51 silly audit   'postcss-selector-parser': [ '6.1.2' ],
+51 silly audit   'postcss-value-parser': [ '4.2.0' ],
+51 silly audit   'prop-types': [ '15.8.1' ],
+51 silly audit   'react-is': [ '16.13.1', '18.3.1' ],
+51 silly audit   'queue-microtask': [ '1.2.3' ],
+51 silly audit   react: [ '18.3.1' ],
+51 silly audit   'react-dom': [ '18.3.1' ],
+51 silly audit   'react-smooth': [ '4.0.4' ],
+51 silly audit   'react-transition-group': [ '4.4.5' ],
+51 silly audit   'read-cache': [ '1.0.0' ],
+51 silly audit   readdirp: [ '3.6.0' ],
+51 silly audit   recharts: [ '2.15.4' ],
+51 silly audit   'recharts-scale': [ '0.4.5' ],
+51 silly audit   resolve: [ '1.22.11' ],
+51 silly audit   reusify: [ '1.1.0' ],
+51 silly audit   'run-parallel': [ '1.2.0' ],
+51 silly audit   scheduler: [ '0.23.2' ],
+51 silly audit   'source-map-js': [ '1.2.1' ],
+51 silly audit   streamsearch: [ '1.1.0' ],
+51 silly audit   'styled-jsx': [ '5.1.1' ],
+51 silly audit   sucrase: [ '3.35.1' ],
+51 silly audit   'supports-preserve-symlinks-flag': [ '1.0.0' ],
+51 silly audit   tabbable: [ '6.4.0' ],
+51 silly audit   tailwindcss: [ '3.4.19' ],
+51 silly audit   thenify: [ '3.3.1' ],
+51 silly audit   'thenify-all': [ '1.6.0' ],
+51 silly audit   'tiny-invariant': [ '1.3.3' ],
+51 silly audit   tinyglobby: [ '0.2.15' ],
+51 silly audit   fdir: [ '6.5.0' ],
+51 silly audit   'to-regex-range': [ '5.0.1' ],
+51 silly audit   'ts-interface-checker': [ '0.1.13' ],
+51 silly audit   tslib: [ '2.8.1' ],
+51 silly audit   typescript: [ '5.9.3' ],
+51 silly audit   'undici-types': [ '6.21.0' ],
+51 silly audit   'update-browserslist-db': [ '1.2.3' ],
+51 silly audit   'use-sync-external-store': [ '1.6.0' ],
+51 silly audit   'util-deprecate': [ '1.0.2' ],
+51 silly audit   'victory-vendor': [ '36.9.2' ],
+51 silly audit   zustand: [ '5.0.11' ]
+51 silly audit }
+52 http cache @tanstack/virtual-core@https://registry.npmjs.org/@tanstack/virtual-core/-/virtual-core-3.13.18.tgz 0ms (cache hit)
+53 http cache @tanstack/react-virtual@https://registry.npmjs.org/@tanstack/react-virtual/-/react-virtual-3.13.18.tgz 0ms (cache hit)
+54 http cache @react-types/shared@https://registry.npmjs.org/@react-types/shared/-/shared-3.33.0.tgz 0ms (cache hit)
+55 http cache @react-stately/utils@https://registry.npmjs.org/@react-stately/utils/-/utils-3.11.0.tgz 0ms (cache hit)
+56 http cache @react-aria/utils@https://registry.npmjs.org/@react-aria/utils/-/utils-3.33.0.tgz 0ms (cache hit)
+57 http cache @react-aria/ssr@https://registry.npmjs.org/@react-aria/ssr/-/ssr-3.9.10.tgz 0ms (cache hit)
+58 http cache @react-stately/flags@https://registry.npmjs.org/@react-stately/flags/-/flags-3.1.2.tgz 0ms (cache hit)
+59 http cache @react-aria/focus@https://registry.npmjs.org/@react-aria/focus/-/focus-3.21.4.tgz 0ms (cache hit)
+60 http cache @react-aria/interactions@https://registry.npmjs.org/@react-aria/interactions/-/interactions-3.27.0.tgz 0ms (cache hit)
+61 http cache @next/swc-win32-x64-msvc@https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.24.tgz 0ms (cache hit)
+62 http cache @headlessui/react@https://registry.npmjs.org/@headlessui/react/-/react-2.2.9.tgz 0ms (cache hit)
+63 http cache @floating-ui/react@https://registry.npmjs.org/@floating-ui/react/-/react-0.26.28.tgz 0ms (cache hit)
+64 http cache @floating-ui/utils@https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.10.tgz 0ms (cache hit)
+65 http cache @floating-ui/dom@https://registry.npmjs.org/@floating-ui/dom/-/dom-1.7.5.tgz 0ms (cache hit)
+66 http cache @floating-ui/core@https://registry.npmjs.org/@floating-ui/core/-/core-1.7.4.tgz 0ms (cache hit)
+67 http cache use-sync-external-store@https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.6.0.tgz 0ms (cache hit)
+68 http cache @floating-ui/react-dom@https://registry.npmjs.org/@floating-ui/react-dom/-/react-dom-2.1.7.tgz 0ms (cache hit)
+69 http cache update-browserslist-db@https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.2.3.tgz 0ms (cache hit)
+70 http cache typescript@https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz 0ms (cache hit)
+71 http cache tabbable@https://registry.npmjs.org/tabbable/-/tabbable-6.4.0.tgz 0ms (cache hit)
+72 http cache tailwindcss@https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.4.19.tgz 0ms (cache hit)
+73 http cache resolve@https://registry.npmjs.org/resolve/-/resolve-1.22.11.tgz 0ms (cache hit)
+74 http cache sucrase@https://registry.npmjs.org/sucrase/-/sucrase-3.35.1.tgz 0ms (cache hit)
+75 http cache next@https://registry.npmjs.org/next/-/next-14.2.24.tgz 0ms (cache hit)
+76 http cache nanoid@https://registry.npmjs.org/nanoid/-/nanoid-3.3.11.tgz 0ms (cache hit)
+77 http cache motion-utils@https://registry.npmjs.org/motion-utils/-/motion-utils-11.18.1.tgz 0ms (cache hit)
+78 http cache lucide-react@https://registry.npmjs.org/lucide-react/-/lucide-react-0.511.0.tgz 0ms (cache hit)
+79 http cache motion-dom@https://registry.npmjs.org/motion-dom/-/motion-dom-11.18.1.tgz 0ms (cache hit)
+80 http cache loose-envify@https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz 0ms (cache hit)
+81 http cache jiti@https://registry.npmjs.org/jiti/-/jiti-1.21.7.tgz 0ms (cache hit)
+82 http cache framer-motion@https://registry.npmjs.org/framer-motion/-/framer-motion-11.18.2.tgz 0ms (cache hit)
+83 http cache cssesc@https://registry.npmjs.org/cssesc/-/cssesc-3.0.0.tgz 0ms (cache hit)
+84 http cache postcss@https://registry.npmjs.org/postcss/-/postcss-8.4.31.tgz 0ms (cache hit)
+85 silly tarball no local data for @tanstack/virtual-core@https://registry.npmjs.org/@tanstack/virtual-core/-/virtual-core-3.13.18.tgz. Extracting by manifest.
+86 silly tarball no local data for @tanstack/react-virtual@https://registry.npmjs.org/@tanstack/react-virtual/-/react-virtual-3.13.18.tgz. Extracting by manifest.
+87 silly tarball no local data for @react-types/shared@https://registry.npmjs.org/@react-types/shared/-/shared-3.33.0.tgz. Extracting by manifest.
+88 http cache browserslist@https://registry.npmjs.org/browserslist/-/browserslist-4.28.1.tgz 0ms (cache hit)
+89 silly tarball no local data for @react-stately/utils@https://registry.npmjs.org/@react-stately/utils/-/utils-3.11.0.tgz. Extracting by manifest.
+90 silly tarball no local data for @react-aria/utils@https://registry.npmjs.org/@react-aria/utils/-/utils-3.33.0.tgz. Extracting by manifest.
+91 silly tarball no local data for @react-aria/ssr@https://registry.npmjs.org/@react-aria/ssr/-/ssr-3.9.10.tgz. Extracting by manifest.
+92 silly tarball no local data for @react-stately/flags@https://registry.npmjs.org/@react-stately/flags/-/flags-3.1.2.tgz. Extracting by manifest.
+93 silly tarball no local data for @react-aria/focus@https://registry.npmjs.org/@react-aria/focus/-/focus-3.21.4.tgz. Extracting by manifest.
+94 silly tarball no local data for @react-aria/interactions@https://registry.npmjs.org/@react-aria/interactions/-/interactions-3.27.0.tgz. Extracting by manifest.
+95 silly tarball no local data for @next/swc-win32-x64-msvc@https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.24.tgz. Extracting by manifest.
+96 silly tarball no local data for @headlessui/react@https://registry.npmjs.org/@headlessui/react/-/react-2.2.9.tgz. Extracting by manifest.
+97 http cache baseline-browser-mapping@https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.0.tgz 0ms (cache hit)
+98 silly tarball no local data for @floating-ui/react@https://registry.npmjs.org/@floating-ui/react/-/react-0.26.28.tgz. Extracting by manifest.
+99 silly tarball no local data for @floating-ui/utils@https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.10.tgz. Extracting by manifest.
+100 http cache autoprefixer@https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.24.tgz 0ms (cache hit)
+101 silly tarball no local data for @floating-ui/dom@https://registry.npmjs.org/@floating-ui/dom/-/dom-1.7.5.tgz. Extracting by manifest.
+102 silly tarball no local data for @floating-ui/core@https://registry.npmjs.org/@floating-ui/core/-/core-1.7.4.tgz. Extracting by manifest.
+103 silly tarball no local data for use-sync-external-store@https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.6.0.tgz. Extracting by manifest.
+104 silly tarball no local data for @floating-ui/react-dom@https://registry.npmjs.org/@floating-ui/react-dom/-/react-dom-2.1.7.tgz. Extracting by manifest.
+105 silly tarball no local data for update-browserslist-db@https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.2.3.tgz. Extracting by manifest.
+106 silly tarball no local data for typescript@https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz. Extracting by manifest.
+107 silly tarball no local data for tabbable@https://registry.npmjs.org/tabbable/-/tabbable-6.4.0.tgz. Extracting by manifest.
+108 silly tarball no local data for tailwindcss@https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.4.19.tgz. Extracting by manifest.
+109 silly tarball no local data for resolve@https://registry.npmjs.org/resolve/-/resolve-1.22.11.tgz. Extracting by manifest.
+110 silly tarball no local data for sucrase@https://registry.npmjs.org/sucrase/-/sucrase-3.35.1.tgz. Extracting by manifest.
+111 silly tarball no local data for next@https://registry.npmjs.org/next/-/next-14.2.24.tgz. Extracting by manifest.
+112 silly tarball no local data for nanoid@https://registry.npmjs.org/nanoid/-/nanoid-3.3.11.tgz. Extracting by manifest.
+113 silly tarball no local data for motion-utils@https://registry.npmjs.org/motion-utils/-/motion-utils-11.18.1.tgz. Extracting by manifest.
+114 silly tarball no local data for lucide-react@https://registry.npmjs.org/lucide-react/-/lucide-react-0.511.0.tgz. Extracting by manifest.
+115 silly tarball no local data for motion-dom@https://registry.npmjs.org/motion-dom/-/motion-dom-11.18.1.tgz. Extracting by manifest.
+116 silly tarball no local data for loose-envify@https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz. Extracting by manifest.
+117 silly tarball no local data for jiti@https://registry.npmjs.org/jiti/-/jiti-1.21.7.tgz. Extracting by manifest.
+118 silly tarball no local data for framer-motion@https://registry.npmjs.org/framer-motion/-/framer-motion-11.18.2.tgz. Extracting by manifest.
+119 silly tarball no local data for cssesc@https://registry.npmjs.org/cssesc/-/cssesc-3.0.0.tgz. Extracting by manifest.
+120 silly tarball no local data for postcss@https://registry.npmjs.org/postcss/-/postcss-8.4.31.tgz. Extracting by manifest.
+121 silly tarball no local data for browserslist@https://registry.npmjs.org/browserslist/-/browserslist-4.28.1.tgz. Extracting by manifest.
+122 silly tarball no local data for baseline-browser-mapping@https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.0.tgz. Extracting by manifest.
+123 silly tarball no local data for autoprefixer@https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.24.tgz. Extracting by manifest.
+124 verbose audit error FetchError: request to https://registry.npmjs.org/-/npm/v1/security/advisories/bulk failed, reason: 
+124 verbose audit error     at ClientRequest.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\minipass-fetch\lib\index.js:130:14)
+124 verbose audit error     at ClientRequest.emit (node:events:508:28)
+124 verbose audit error     at emitErrorEvent (node:_http_client:108:11)
+124 verbose audit error     at _destroy (node:_http_client:962:9)
+124 verbose audit error     at onSocketNT (node:_http_client:982:5)
+124 verbose audit error     at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+124 verbose audit error   code: 'EACCES',
+124 verbose audit error   errno: 'EACCES',
+124 verbose audit error   type: 'system'
+124 verbose audit error }
+125 silly audit error undefined
+126 silly audit report null
+127 http fetch GET https://registry.npmjs.org/@tanstack/virtual-core/-/virtual-core-3.13.18.tgz attempt 1 failed with EACCES
+128 http fetch GET https://registry.npmjs.org/@tanstack/react-virtual/-/react-virtual-3.13.18.tgz attempt 1 failed with EACCES
+129 http fetch GET https://registry.npmjs.org/@react-types/shared/-/shared-3.33.0.tgz attempt 1 failed with EACCES
+130 http fetch GET https://registry.npmjs.org/@react-stately/utils/-/utils-3.11.0.tgz attempt 1 failed with EACCES
+131 http fetch GET https://registry.npmjs.org/@react-aria/utils/-/utils-3.33.0.tgz attempt 1 failed with EACCES
+132 http fetch GET https://registry.npmjs.org/@react-aria/ssr/-/ssr-3.9.10.tgz attempt 1 failed with EACCES
+133 http fetch GET https://registry.npmjs.org/@react-stately/flags/-/flags-3.1.2.tgz attempt 1 failed with EACCES
+134 http fetch GET https://registry.npmjs.org/@react-aria/focus/-/focus-3.21.4.tgz attempt 1 failed with EACCES
+135 http fetch GET https://registry.npmjs.org/@react-aria/interactions/-/interactions-3.27.0.tgz attempt 1 failed with EACCES
+136 http fetch GET https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.24.tgz attempt 1 failed with EACCES
+137 http fetch GET https://registry.npmjs.org/@headlessui/react/-/react-2.2.9.tgz attempt 1 failed with EACCES
+138 http fetch GET https://registry.npmjs.org/@floating-ui/react/-/react-0.26.28.tgz attempt 1 failed with EACCES
+139 http fetch GET https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.10.tgz attempt 1 failed with EACCES
+140 http fetch GET https://registry.npmjs.org/@floating-ui/dom/-/dom-1.7.5.tgz attempt 1 failed with EACCES
+141 http fetch GET https://registry.npmjs.org/@tanstack/virtual-core/-/virtual-core-3.13.18.tgz attempt 2 failed with EACCES
+142 http fetch GET https://registry.npmjs.org/@tanstack/react-virtual/-/react-virtual-3.13.18.tgz attempt 2 failed with EACCES
+143 http fetch GET https://registry.npmjs.org/@react-types/shared/-/shared-3.33.0.tgz attempt 2 failed with EACCES
+144 http fetch GET https://registry.npmjs.org/@react-stately/utils/-/utils-3.11.0.tgz attempt 2 failed with EACCES
+145 http fetch GET https://registry.npmjs.org/@react-aria/utils/-/utils-3.33.0.tgz attempt 2 failed with EACCES
+146 http fetch GET https://registry.npmjs.org/@react-aria/ssr/-/ssr-3.9.10.tgz attempt 2 failed with EACCES
+147 http fetch GET https://registry.npmjs.org/@react-stately/flags/-/flags-3.1.2.tgz attempt 2 failed with EACCES
+148 http fetch GET https://registry.npmjs.org/@react-aria/focus/-/focus-3.21.4.tgz attempt 2 failed with EACCES
+149 http fetch GET https://registry.npmjs.org/@react-aria/interactions/-/interactions-3.27.0.tgz attempt 2 failed with EACCES
+150 http fetch GET https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.24.tgz attempt 2 failed with EACCES
+151 http fetch GET https://registry.npmjs.org/@headlessui/react/-/react-2.2.9.tgz attempt 2 failed with EACCES
+152 http fetch GET https://registry.npmjs.org/@floating-ui/react/-/react-0.26.28.tgz attempt 2 failed with EACCES
+153 http fetch GET https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.10.tgz attempt 2 failed with EACCES
+154 http fetch GET https://registry.npmjs.org/@floating-ui/dom/-/dom-1.7.5.tgz attempt 2 failed with EACCES
+155 http fetch GET https://registry.npmjs.org/@tanstack/virtual-core/-/virtual-core-3.13.18.tgz attempt 3 failed with EACCES
+156 http fetch GET https://registry.npmjs.org/@tanstack/react-virtual/-/react-virtual-3.13.18.tgz attempt 3 failed with EACCES
+157 http fetch GET https://registry.npmjs.org/@react-types/shared/-/shared-3.33.0.tgz attempt 3 failed with EACCES
+158 http fetch GET https://registry.npmjs.org/@react-stately/utils/-/utils-3.11.0.tgz attempt 3 failed with EACCES
+159 http fetch GET https://registry.npmjs.org/@react-aria/utils/-/utils-3.33.0.tgz attempt 3 failed with EACCES
+160 http fetch GET https://registry.npmjs.org/@react-aria/ssr/-/ssr-3.9.10.tgz attempt 3 failed with EACCES
+161 http fetch GET https://registry.npmjs.org/@react-stately/flags/-/flags-3.1.2.tgz attempt 3 failed with EACCES
+162 http fetch GET https://registry.npmjs.org/@react-aria/focus/-/focus-3.21.4.tgz attempt 3 failed with EACCES
+163 http fetch GET https://registry.npmjs.org/@react-aria/interactions/-/interactions-3.27.0.tgz attempt 3 failed with EACCES
+164 http fetch GET https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.24.tgz attempt 3 failed with EACCES
+165 verbose reify failed optional dependency C:\Users\hvred\Documents\Ai-Projects\Ai_Job\apex-apply\apps\web\node_modules\@next\swc-win32-x64-msvc
+166 silly reify mark deleted [
+166 silly reify   'C:\\Users\\hvred\\Documents\\Ai-Projects\\Ai_Job\\apex-apply\\apps\\web\\node_modules\\@next\\swc-win32-x64-msvc'
+166 silly reify ]
+167 http fetch GET https://registry.npmjs.org/@headlessui/react/-/react-2.2.9.tgz attempt 3 failed with EACCES
+168 http fetch GET https://registry.npmjs.org/@floating-ui/react/-/react-0.26.28.tgz attempt 3 failed with EACCES
+169 http fetch GET https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.10.tgz attempt 3 failed with EACCES
+170 http fetch GET https://registry.npmjs.org/@floating-ui/dom/-/dom-1.7.5.tgz attempt 3 failed with EACCES
+171 verbose cwd C:\Users\hvred\Documents\Ai-Projects\Ai_Job\apex-apply\apps\web
+172 verbose os Windows_NT 10.0.26100
+173 verbose node v24.13.0
+174 verbose npm  v11.6.2
+175 error Exit handler never called!
+176 error This is an error with npm itself. Please report this error at:
+177 error   <https://github.com/npm/cli/issues>
+178 verbose exit 1
+179 verbose code 1
+180 error A complete log of this run can be found in: C:\Users\hvred\Documents\Ai-Projects\Ai_Job\apex-apply\apps\web\.npm-cache\_logs\2026-02-20T21_27_15_417Z-debug-0.log

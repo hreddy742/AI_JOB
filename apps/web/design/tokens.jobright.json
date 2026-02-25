@@ -1,0 +1,89 @@
+{
+  "$schema": "https://tokens.studio/schemas/v1.json",
+  "global": {
+    "color": {
+      "brand": {
+        "50": { "value": "#eef7ff" },
+        "100": { "value": "#d8ebff" },
+        "200": { "value": "#afd7ff" },
+        "300": { "value": "#7eb9ff" },
+        "400": { "value": "#4a95ff" },
+        "500": { "value": "#2e73f6" },
+        "600": { "value": "#2459ce" },
+        "700": { "value": "#2148a5" },
+        "800": { "value": "#1f3e86" },
+        "900": { "value": "#1f366f" }
+      },
+      "accent": {
+        "teal": { "value": "#06b6d4" },
+        "emerald": { "value": "#22c55e" },
+        "amber": { "value": "#f59e0b" },
+        "rose": { "value": "#f43f5e" }
+      },
+      "surface": {
+        "light": { "value": "#f6f8fc" },
+        "dark": { "value": "#070b14" },
+        "cardLight": { "value": "#ffffff" },
+        "cardDark": { "value": "#111b2f" }
+      },
+      "text": {
+        "primaryLight": { "value": "#101828" },
+        "secondaryLight": { "value": "#475467" },
+        "primaryDark": { "value": "#f8fafc" },
+        "secondaryDark": { "value": "#c6d0e4" }
+      }
+    },
+    "typography": {
+      "fontFamily": {
+        "display": { "value": "'Sora', 'Space Grotesk', sans-serif" },
+        "body": { "value": "'Space Grotesk', sans-serif" }
+      },
+      "size": {
+        "xs": { "value": "0.75rem" },
+        "sm": { "value": "0.875rem" },
+        "base": { "value": "1rem" },
+        "lg": { "value": "1.125rem" },
+        "xl": { "value": "1.25rem" },
+        "2xl": { "value": "1.5rem" },
+        "3xl": { "value": "1.875rem" },
+        "4xl": { "value": "2.25rem" }
+      }
+    },
+    "spacing": {
+      "0": { "value": "0" },
+      "1": { "value": "0.25rem" },
+      "2": { "value": "0.5rem" },
+      "3": { "value": "0.75rem" },
+      "4": { "value": "1rem" },
+      "6": { "value": "1.5rem" },
+      "8": { "value": "2rem" },
+      "10": { "value": "2.5rem" },
+      "12": { "value": "3rem" },
+      "16": { "value": "4rem" }
+    },
+    "radius": {
+      "sm": { "value": "0.5rem" },
+      "md": { "value": "0.75rem" },
+      "lg": { "value": "1rem" },
+      "xl": { "value": "1.25rem" },
+      "2xl": { "value": "1.5rem" }
+    },
+    "elevation": {
+      "sm": { "value": "0 2px 10px rgba(16, 24, 40, 0.08)" },
+      "md": { "value": "0 10px 24px rgba(16, 24, 40, 0.12)" },
+      "lg": { "value": "0 24px 56px rgba(16, 24, 40, 0.16)" }
+    },
+    "motion": {
+      "easing": {
+        "standard": { "value": "cubic-bezier(0.22, 1, 0.36, 1)" },
+        "exit": { "value": "cubic-bezier(0.4, 0, 1, 1)" },
+        "entrance": { "value": "cubic-bezier(0, 0, 0.2, 1)" }
+      },
+      "duration": {
+        "fast": { "value": "120ms" },
+        "base": { "value": "220ms" },
+        "slow": { "value": "420ms" }
+      }
+    }
+  }
+}
