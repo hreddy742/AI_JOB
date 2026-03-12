@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:16
+    image: pgvector/pgvector:pg16
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -10,6 +10,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init-dbs.sh:/docker-entrypoint-initdb.d/init-dbs.sh:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d apex_apply"]
       interval: 10s
@@ -19,19 +20,17 @@ services:
   redis:
     image: redis:7
     restart: unless-stopped
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     ports:
       - "6379:6379"
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - redis_data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 10
-
-  chromadb:
-    image: chromadb/chroma:0.5.23
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
 
   ollama:
     image: ollama/ollama:latest
@@ -44,8 +43,8 @@ services:
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-minioadmin}
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -55,7 +54,7 @@ services:
   typesense:
     image: typesense/typesense:0.25.1
     restart: unless-stopped
-    command: "--data-dir /data --api-key=apex-apply-local-key --enable-cors"
+    command: "--data-dir /data --api-key=${TYPESENSE_API_KEY:-apex-apply-local-key}"
     ports:
       - "8108:8108"
     volumes:
@@ -70,16 +69,17 @@ services:
 
   api:
     build: ../apps/api
-    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+    command: uvicorn main:app --host 0.0.0.0 --port 8001
     restart: unless-stopped
     env_file:
       - ../.env.example
+      - ../.env
     environment:
-      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/apex_apply
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
       REDIS_URL: redis://redis:6379/0
-      SECRET_KEY: dev-secret
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
       SMTP_HOST: ${SMTP_HOST:-mailpit}
       SMTP_PORT: ${SMTP_PORT:-1025}
       SMTP_STARTTLS: ${SMTP_STARTTLS:-false}
@@ -88,15 +88,16 @@ services:
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
       SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Apex Apply}
       SMTP_FROM_EMAIL: ${SMTP_FROM_EMAIL:-no-reply@apexapply.local}
-      RATE_LIMIT_LOGIN_MAX: 10
-      RATE_LIMIT_LOGIN_WINDOW_SECONDS: 0
-      RATE_LIMIT_REGISTER_MAX: 0
-      RATE_LIMIT_REGISTER_WINDOW_SECONDS: 0
-      MAX_FAILED_LOGINS: 10
-      ACCOUNT_LOCKOUT_MINUTES: 0
-      ENABLE_BACKGROUND_INGESTION: "false"
-      INGESTION_INTERVAL_SECONDS: 3600
-      ENABLE_JOB_EMBEDDINGS: "false"
+      RATE_LIMIT_LOGIN_MAX: ${RATE_LIMIT_LOGIN_MAX:-10}
+      RATE_LIMIT_LOGIN_WINDOW_SECONDS: ${RATE_LIMIT_LOGIN_WINDOW_SECONDS:-900}
+      RATE_LIMIT_REGISTER_MAX: ${RATE_LIMIT_REGISTER_MAX:-10}
+      RATE_LIMIT_REGISTER_WINDOW_SECONDS: ${RATE_LIMIT_REGISTER_WINDOW_SECONDS:-3600}
+      MAX_FAILED_LOGINS: ${MAX_FAILED_LOGINS:-10}
+      ACCOUNT_LOCKOUT_MINUTES: ${ACCOUNT_LOCKOUT_MINUTES:-15}
+      ENABLE_BACKGROUND_INGESTION: "true"
+      INGESTION_INTERVAL_SECONDS: 2700
+      ENABLE_JOB_EMBEDDINGS: "true"
+      # Source API keys are injected via env_file (../.env) so local pasted keys are used.
       PYTHONPATH: /app
     ports:
       - "8001:8001"
@@ -104,13 +105,14 @@ services:
       - ../apps/api:/app
       - ../tests:/app/tests
       - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
     depends_on:
       postgres:
         condition: service_healthy
+      pgbouncer:
+        condition: service_started
       redis:
         condition: service_healthy
-      chromadb:
-        condition: service_started
       ollama:
         condition: service_started
       minio:
@@ -124,6 +126,434 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+
+  resume-worker:
+    build: ../apps/api
+    command: arq workers.resume_worker.WorkerSettings
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_STARTTLS: ${SMTP_STARTTLS:-false}
+      SMTP_USE_TLS: ${SMTP_USE_TLS:-false}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Apex Apply}
+      SMTP_FROM_EMAIL: ${SMTP_FROM_EMAIL:-no-reply@apexapply.local}
+      PYTHONPATH: /app
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      minio:
+        condition: service_started
+
+  tailoring-worker:
+    build: ../apps/api
+    command: arq workers.tailoring_worker.WorkerSettings
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      PYTHONPATH: /app
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      minio:
+        condition: service_started
+
+  embedding-worker:
+    build: ../apps/api
+    command: arq workers.embedding_worker.WorkerSettings
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      TYPESENSE_API_KEY: ${TYPESENSE_API_KEY:-apex-apply-local-key}
+      ENABLE_JOB_EMBEDDINGS: "true"
+      PYTHONPATH: /app
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      minio:
+        condition: service_started
+
+  job-requirements-worker:
+    build: ../apps/api
+    command: arq workers.job_requirements_worker.WorkerSettings
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      TYPESENSE_API_KEY: ${TYPESENSE_API_KEY:-apex-apply-local-key}
+      PYTHONPATH: /app
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      typesense:
+        condition: service_started
+
+  job-coverage-worker:
+    build: ../apps/api
+    command: arq workers.job_coverage_worker.WorkerSettings
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      TYPESENSE_API_KEY: ${TYPESENSE_API_KEY:-apex-apply-local-key}
+      PYTHONPATH: /app
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      typesense:
+        condition: service_started
+
+  job-detail-enrichment-worker:
+    build: ../apps/api
+    command: arq workers.job_detail_enrichment_worker.WorkerSettings
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      PYTHONPATH: /app
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+
+  automation-worker:
+    build: ../apps/api
+    command: arq workers.automation_worker.WorkerSettings
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      PYTHONPATH: /app
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      minio:
+        condition: service_started
+
+  campaign-worker:
+    build: ../apps/api
+    command: arq workers.campaign_worker.WorkerSettings
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      PYTHONPATH: /app
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+
+  referral-worker:
+    build: ../apps/api
+    command: arq workers.referral_worker.WorkerSettings
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      PYTHONPATH: /app
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      minio:
+        condition: service_started
+
+  notification-worker:
+    build: ../apps/api
+    command: arq workers.notification_worker.WorkerSettings
+    restart: unless-stopped
+    env_file:
+      - ../.env.example
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@pgbouncer:5432/apex_apply
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_STARTTLS: ${SMTP_STARTTLS:-false}
+      SMTP_USE_TLS: ${SMTP_USE_TLS:-false}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Apex Apply}
+      SMTP_FROM_EMAIL: ${SMTP_FROM_EMAIL:-no-reply@apexapply.local}
+      PYTHONPATH: /app
+    volumes:
+      - ../apps/api:/app
+      - ../tests:/app/tests
+      - ../scripts:/app/scripts
+      - bloom_data:/var/bloom
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/apex_apply
+      POOL_MODE: transaction
+      MAX_CLIENT_CONN: 1000
+      DEFAULT_POOL_SIZE: 25
+    ports:
+      - "5433:5432"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  glitchtip:
+    image: glitchtip/glitchtip:latest
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+      SECRET_KEY: ${GLITCHTIP_SECRET_KEY:-change-me}
+      EMAIL_URL: consolemail://
+      GLITCHTIP_DOMAIN: http://localhost:8080
+      ENABLE_USER_REGISTRATION: "False"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  glitchtip-worker:
+    image: glitchtip/glitchtip:latest
+    command: ./bin/run-celery-with-beat.sh
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+      SECRET_KEY: ${GLITCHTIP_SECRET_KEY:-change-me}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    restart: unless-stopped
+    environment:
+      DATA_SOURCE_NAME: postgresql://postgres:postgres@postgres:5432/apex_apply?sslmode=disable
+    ports:
+      - "9187:9187"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    restart: unless-stopped
+    environment:
+      REDIS_ADDR: redis://redis:6379
+    ports:
+      - "9121:9121"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      api:
+        condition: service_started
+
+  loki:
+    image: grafana/loki:latest
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - loki_data:/loki
+
+  promtail:
+    image: grafana/promtail:latest
+    restart: unless-stopped
+    volumes:
+      - /var/log:/var/log:ro
+      - ./config/promtail.yml:/etc/promtail/config.yml:ro
+    depends_on:
+      loki:
+        condition: service_started
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./config/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - "3001:3000"
+    depends_on:
+      prometheus:
+        condition: service_started
+      loki:
+        condition: service_started
 
   web:
     image: node:20-alpine
@@ -151,6 +581,11 @@ services:
 
 volumes:
   postgres_data:
+  redis_data:
   minio_data:
   typesense_data:
   web_node_modules:
+  bloom_data:
+  prometheus_data:
+  loki_data:
+  grafana_data:

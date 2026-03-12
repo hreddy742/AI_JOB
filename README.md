@@ -8,7 +8,7 @@ Production-grade multi-tenant AI job application automation platform.
 - Frontend: Next.js 14 App Router (TypeScript)
 - Database: PostgreSQL 16 with tenant RLS policies
 - Search: Typesense
-- Vector: ChromaDB
+- Vector: pgvector (in-database embeddings via PostgreSQL extension)
 - Cache/Queue: Redis + ARQ
 - LLM runtime: Ollama
 - Browser automation: Playwright
@@ -37,6 +37,8 @@ Production-grade multi-tenant AI job application automation platform.
 ```bash
 cp .env.example .env
 ```
+
+If a local `.env` with real credentials was ever committed, treat those values as compromised and rotate them before any shared or production use.
 
 2. Start services:
 
@@ -77,6 +79,7 @@ python scripts/seed_typesense.py
 
 ```bash
 python scripts/smoke_test.py
+python scripts/smoke_jobs_filters.py
 ```
 
 ## Production
@@ -94,7 +97,7 @@ For full VPS deployment steps and automation scripts, see `DEPLOYMENT.md`.
 Run all tests:
 
 ```bash
-docker compose -f infra/docker-compose.yml exec -T api sh -lc "PYTHONPATH=/app pytest /app/tests -v"
+make test-all
 ```
 
 Targeted tests:
@@ -121,10 +124,49 @@ Optional (skip LLM call, keep heuristic analysis):
 python scripts/intelligent_test_analyzer.py --no-llm
 ```
 
+Offline ranking evaluation (BM25/vector/RRF/rerank):
+
+```bash
+make ranking-eval
+make ranking-gate
+make ranking-build-fixture
+make ranking-gate-real
+```
+
+`ranking-gate` uses `tests/fixtures/ranking_eval_rerank_baseline.json` and exits non-zero if the rerank candidate regresses below the configured `min_delta`.
+`ranking-build-fixture` builds `tests/fixtures/ranking_eval_real_sample.json` from a CSV source schema (`query_id,relevant_ids,bm25_ids,vector_ids,rrf_ids,rrf_rerank_ids`).
+
+Reranking rollout readiness can be monitored via admin APIs:
+
+- `GET /admin/ranking/rerank-status?days=7`
+- `GET /admin/ranking/rerank-readiness?days=7&min_attempts=100&max_timeout_rate=0.05&max_failure_rate=0.02&max_average_latency_ms=800`
+
+Enable `ENABLE_RERANKING=true` only when offline gate passes and readiness endpoint returns `ready_to_enable_reranking=true` for your chosen thresholds.
+Production examples now set `ENABLE_RERANKING=true`; use tenant-scoped admin override endpoints (`/admin/ranking/rerank-config`) to disable or re-enable instantly per tenant.
+
+## Operations Quick Checks
+
+After `docker compose -f infra/docker-compose.yml up -d --build`, verify these runtime paths:
+
+- Notification pipeline:
+  - worker: `notification-worker`
+  - stream status: `GET /admin/alerts/status`
+- Requirements extraction queue:
+  - `GET /admin/requirements/status`
+- Coverage and freshness:
+  - `GET /admin/coverage/dashboard`
+- Adaptive ranking feedback capture:
+  - `POST /jobs/{job_id}/feedback` with `open` / `apply_click`
+  - `GET /analytics/ranking-feedback`
+- Automation task state (with persisted FSM snapshot):
+  - `GET /applications/automate/tasks/{task_id}`
+- Analytics marts refresh:
+  - `POST /analytics/marts/refresh` (admin only)
+
 ## Jobs Discovery
 
 - `All Jobs` mode: full-text + faceted search (`/jobs/search`, Typesense).
-- `Semantic Matches` mode: resume-based similarity (`/jobs/matches`, ChromaDB).
+- `Semantic Matches` mode: resume-based similarity (`/jobs/matches`, pgvector).
 - New tenant registrations are auto-seeded with default listings and indexed.
 
 ## CI

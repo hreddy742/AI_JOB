@@ -13,7 +13,21 @@ const publicRoutes = [
   "/register",
 ];
 
-const protectedPrefixes = ["/dashboard", "/jobs", "/applications", "/profile", "/settings", "/copilot", "/resumes", "/outreach", "/referrals", "/analytics"];
+const protectedPrefixes = [
+  "/dashboard",
+  "/jobs",
+  "/applications",
+  "/profile",
+  "/settings",
+  "/copilot",
+  "/resumes",
+  "/outreach",
+  "/referrals",
+  "/analytics",
+  "/insights",
+  "/matching",
+  "/tailored-resume",
+];
 
 export function middleware(request: NextRequest): NextResponse {
   const path = request.nextUrl.pathname;

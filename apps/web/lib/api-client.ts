@@ -21,6 +21,15 @@ function normalizeBase(url: string): string {
   return url.replace(/\/+$/, "");
 }
 
+function getCsrfTokenFromCookie(): string | null {
+  if (typeof document === "undefined") return null;
+  const entry = document.cookie
+    .split("; ")
+    .find((part) => part.startsWith("apex_csrf_token="));
+  if (!entry) return null;
+  return decodeURIComponent(entry.slice("apex_csrf_token=".length));
+}
+
 function apiBaseCandidates(): string[] {
   const set = new Set<string>();
   const add = (value: string | null | undefined) => {
@@ -83,11 +92,16 @@ async function readErrorMessage(response: Response): Promise<string> {
 async function request<T>(path: string, init: RequestOptions = {}): Promise<T> {
   const state = useAuthStore.getState();
   const token = init.token ?? state.accessToken;
+  const method = (init.method ?? "GET").toUpperCase();
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(init.headers as Record<string, string> | undefined),
   };
   if (token) headers.Authorization = `Bearer ${token}`;
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+    const csrf = getCsrfTokenFromCookie();
+    if (csrf) headers["X-CSRF-Token"] = csrf;
+  }
 
   const response = await fetchApi(path, {
     ...init,
@@ -161,13 +175,18 @@ export const api = {
   getProfile: (token: string) => request("/profile", { token }),
   upsertProfile: (token: string, body: unknown) =>
     request("/profile", { method: "PUT", body: JSON.stringify(body), token }),
+  patchProfile: (token: string, body: unknown) =>
+    request("/profile", { method: "PATCH", body: JSON.stringify(body), token }),
 
   searchJobs: (token: string, query: URLSearchParams) => request(`/jobs/search?${query.toString()}`, { token }),
+  refreshJobs: (token: string) => request(`/jobs/refresh`, { method: "POST", token }),
   getJobMatches: (token: string, resumeId: string, nResults = 50, minScore = 0.6) =>
     request(`/jobs/matches?resume_id=${encodeURIComponent(resumeId)}&n_results=${nResults}&min_score=${minScore}`, {
       token,
     }),
   getJob: (token: string, id: string) => request(`/jobs/${id}`, { token }),
+  recordJobFeedback: (token: string, id: string, body: { event_type: string; value?: string }) =>
+    request(`/jobs/${id}/feedback`, { method: "POST", body: JSON.stringify(body), token }),
   saveJob: (token: string, id: string) => request(`/jobs/${id}/save`, { method: "POST", token }),
   unsaveJob: (token: string, id: string) => request(`/jobs/${id}/save`, { method: "DELETE", token }),
   listSavedJobs: (token: string) => request("/jobs/saved", { token }),
@@ -176,11 +195,13 @@ export const api = {
   uploadResume: async (token: string, file: File) => {
     const form = new FormData();
     form.append("file", file);
+    const csrf = getCsrfTokenFromCookie();
     const response = await fetchApi("/resumes/upload", {
       method: "POST",
       credentials: "include",
       cache: "no-store",
       headers: {
+        ...(csrf ? { "X-CSRF-Token": csrf } : {}),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: form,
@@ -223,9 +244,30 @@ export const api = {
   listApplications: (token: string) => request("/applications", { token }),
   updateApplication: (token: string, id: string, body: unknown) =>
     request(`/applications/${id}`, { method: "PATCH", body: JSON.stringify(body), token }),
+  queueApplicationPrefill: (token: string, id: string, consent_acknowledged = true) =>
+    request(`/applications/${id}/automate`, {
+      method: "POST",
+      body: JSON.stringify({ consent_acknowledged }),
+      token,
+    }),
+  getApplicationAudit: (token: string, id: string) =>
+    request(`/applications/${id}/audit`, { token }),
+  getAutomationTaskStatus: (token: string, taskId: string) =>
+    request(`/applications/automate/tasks/${taskId}`, { token }),
+  draftScreeningAnswer: (
+    token: string,
+    id: string,
+    body: { question: string; ats_type?: string; approved?: boolean; edited_answer?: string; save_to_memory?: boolean },
+  ) =>
+    request(`/applications/${id}/screening/draft`, {
+      method: "POST",
+      body: JSON.stringify(body),
+      token,
+    }),
 
   getAnalyticsOverview: (token: string) => request("/analytics/overview", { token }),
   getAnalyticsCopilot: (token: string) => request("/analytics/copilot", { token }),
+  refreshAnalyticsMarts: (token: string) => request("/analytics/marts/refresh", { method: "POST", token }),
 
   createCopilotSession: (token: string, body: unknown) =>
     request("/copilot/sessions", { method: "POST", body: JSON.stringify(body), token }),
@@ -238,15 +280,93 @@ export const api = {
   getReferralTask: (token: string, taskId: string) => request(`/referrals/discover/${taskId}/status`, { token }),
   listReferrals: (token: string, jobId?: string) => request(`/referrals${jobId ? `?job_id=${jobId}` : ""}`, { token }),
   convertReferral: (token: string, id: string) => request(`/referrals/${id}/convert`, { method: "POST", token }),
+  updateReferral: (token: string, id: string, body: { status: string }) =>
+    request(`/referrals/${id}`, { method: "PATCH", body: JSON.stringify(body), token }),
+
+  createContact: (token: string, body: unknown) =>
+    request("/contacts", { method: "POST", body: JSON.stringify(body), token }),
+  importLinkedInContacts: async (token: string, file: File) => {
+    const form = new FormData();
+    form.append("file", file);
+    const csrf = getCsrfTokenFromCookie();
+    const response = await fetchApi("/contacts/import/linkedin", {
+      method: "POST",
+      credentials: "include",
+      cache: "no-store",
+      headers: {
+        ...(csrf ? { "X-CSRF-Token": csrf } : {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: form,
+    });
+    if (!response.ok) throw new Error(await readErrorMessage(response));
+    return response.json();
+  },
+  deleteContact: (token: string, id: string) => request(`/contacts/${id}`, { method: "DELETE", token }),
+  listContacts: (token: string) => request("/contacts", { token }),
+  draftOutreach: (token: string, body: { contact_id: string; job_id?: string }) =>
+    request("/outreach/draft", { method: "POST", body: JSON.stringify(body), token }),
+  listOutreach: (token: string) => request("/outreach", { token }),
+  approveOutreach: (token: string, id: string) => request(`/outreach/${id}/approve`, { method: "POST", token }),
+  sendOutreach: (token: string, id: string, manual_send_confirmed = true) =>
+    request(`/outreach/${id}/send`, {
+      method: "POST",
+      body: JSON.stringify({ manual_send_confirmed }),
+      token,
+    }),
+  updateOutreachStatus: (token: string, id: string, body: { status: string; follow_up_days?: number }) =>
+    request(`/outreach/${id}/status`, { method: "PATCH", body: JSON.stringify(body), token }),
+  getDueOutreachFollowups: (token: string) => request("/outreach/followups/due", { token }),
+
+  getAnalyticsFunnel: (token: string) => request("/analytics/funnel", { token }),
+  getAnalyticsReferrals: (token: string) => request("/analytics/referrals", { token }),
+
+  getIngestionHealth: (token: string) => request<{ sources?: unknown[] }>("/admin/ingestion/health", { token }),
+  getAlertsStatus: (token: string) => request("/admin/alerts/status", { token }),
+  getRerankStatus: (token: string, days = 7) =>
+    request(`/admin/ranking/rerank-status?days=${days}`, { token }),
+  getRerankReadiness: (
+    token: string,
+    params: { days?: number; min_attempts?: number; max_timeout_rate?: number; max_failure_rate?: number; max_average_latency_ms?: number } = {},
+  ) => {
+    const q = new URLSearchParams();
+    if (params.days !== undefined) q.set("days", String(params.days));
+    if (params.min_attempts !== undefined) q.set("min_attempts", String(params.min_attempts));
+    if (params.max_timeout_rate !== undefined) q.set("max_timeout_rate", String(params.max_timeout_rate));
+    if (params.max_failure_rate !== undefined) q.set("max_failure_rate", String(params.max_failure_rate));
+    if (params.max_average_latency_ms !== undefined) q.set("max_average_latency_ms", String(params.max_average_latency_ms));
+    const qs = q.toString();
+    return request(`/admin/ranking/rerank-readiness${qs ? `?${qs}` : ""}`, { token });
+  },
+  getRerankConfig: (token: string) => request("/admin/ranking/rerank-config", { token }),
+  updateRerankConfig: (token: string, enabled: boolean | null) =>
+    request("/admin/ranking/rerank-config", {
+      method: "PUT",
+      body: JSON.stringify({ enabled }),
+      token,
+    }),
   triggerIngestionAll: (token: string) => request("/admin/ingestion/trigger-all", { method: "POST", token }),
+
+  buildApplyPlan: (
+    token: string,
+    sessionId: string,
+    body: { max_jobs?: number; auto_tailor?: boolean; resume_id?: string; tailor_top_n?: number },
+  ) =>
+    request(`/copilot/sessions/${sessionId}/apply-plan`, {
+      method: "POST",
+      body: JSON.stringify(body),
+      token,
+    }),
 };
 
 export async function streamCopilotMessage(token: string, sessionId: string, message: string, onChunk: (chunk: string) => void): Promise<void> {
+  const csrf = getCsrfTokenFromCookie();
   const response = await fetchApi(`/copilot/sessions/${sessionId}/message`, {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...(csrf ? { "X-CSRF-Token": csrf } : {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: JSON.stringify({ message }),
