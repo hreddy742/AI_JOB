@@ -1,0 +1,28 @@
+from browser_agent_v1.providers.base import ProviderPlaybook
+
+PLAYBOOK = ProviderPlaybook(
+    provider="workday",
+    apply_entry_selectors=("a[data-automation-id='apply-button']", "button[data-automation-id='apply-button']", "a:has-text('Apply')"),
+    resume_upload_selectors=("input[data-automation-id='file-upload-input-ref']", "input[type='file']"),
+    upload_confirmation_selectors=("[data-automation-id='file-upload-file-name']", "[data-automation-id='resumeSection']", "text=/uploaded|replace attachment/i"),
+    screening_field_selectors=("fieldset", "[data-automation-id='formField-question']"),
+    submit_selectors=("button[data-automation-id='submitApplication']", "button:has-text('Submit')", "text=/review|submit application/i"),
+    login_selectors=("input[data-automation-id='email']", "input[type='email']", "input[name='email']", "button:has-text('Sign In')"),
+    signup_selectors=("a:has-text('Create Account')", "button:has-text('Create Account')", "text=/create account/i"),
+    login_email_selectors=("input[data-automation-id='email']", "input[type='email']", "input[name='email']"),
+    login_password_selectors=("input[data-automation-id='password']", "input[type='password']", "input[name='password']"),
+    login_submit_selectors=("button:has-text('Sign In')", "button[data-automation-id='signInSubmitButton']", "button[type='submit']"),
+    login_success_selectors=("text=/my applications|candidate home|job application/i", "[data-automation-id='candidateHomePage']"),
+    invalid_credentials_selectors=("[data-automation-id='errorMessage']", "text=/invalid username or password|incorrect password/i"),
+    signup_name_selectors=("input[data-automation-id='firstName']", "input[data-automation-id='lastName']", "input[name='firstName']", "input[name='lastName']"),
+    signup_email_selectors=("input[data-automation-id='email']", "input[type='email']", "input[name='email']"),
+    signup_password_selectors=("input[data-automation-id='password']", "input[type='password']", "input[name='password']"),
+    signup_submit_selectors=("button:has-text('Create Account')", "button[data-automation-id='createAccountSubmitButton']", "button[type='submit']"),
+    signup_success_selectors=("text=/verify your email|continue application|candidate home/i",),
+    duplicate_account_selectors=("text=/account already exists|email already in use|already have an account/i",),
+    account_recovery_selectors=("text=/forgot password|reset password/i", "a:has-text('Forgot Password')"),
+    review_boundary_selectors=("text=/review your application|review and submit/i", "[data-automation-id='reviewScreen']"),
+    validation_selectors=("[data-automation-id='errorMessage']", "[aria-invalid='true']", "[role='alert']"),
+    pause_triggers=("captcha", "mfa", "email verification", "duplicate account", "password reset"),
+    notes=("Supports structured Workday login and low-risk account creation until verification or MFA appears.",),
+)
