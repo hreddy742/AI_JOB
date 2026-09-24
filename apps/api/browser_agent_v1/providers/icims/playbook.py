@@ -1,0 +1,28 @@
+from browser_agent_v1.providers.base import ProviderPlaybook
+
+PLAYBOOK = ProviderPlaybook(
+    provider="icims",
+    apply_entry_selectors=("a.iCIMS_ApplyOnlineButton", "button.iCIMS_ApplyOnlineButton", "a:has-text('Apply')"),
+    resume_upload_selectors=("input[type='file']", "input[name*='resume']", "input[name*='cover']"),
+    upload_confirmation_selectors=("text=/resume|attachment|uploaded/i", ".iCIMS_ResumeUpload", "[class*='Upload']"),
+    screening_field_selectors=("label", "fieldset", "iframe"),
+    submit_selectors=("button:has-text('Submit')", "input[type='submit']", "text=/review|submit application/i"),
+    login_selectors=("input[type='email']", "input[name='email']", "iframe input[type='email']", "button:has-text('Sign In')"),
+    signup_selectors=("a:has-text('Create Profile')", "button:has-text('Create Profile')", "text=/create profile/i"),
+    login_email_selectors=("input[type='email']", "input[name='email']", "input[id*='Email']", "iframe input[type='email']"),
+    login_password_selectors=("input[type='password']", "input[name='password']", "input[id*='Password']", "iframe input[type='password']"),
+    login_submit_selectors=("button:has-text('Sign In')", "input[type='submit']", "button[type='submit']"),
+    login_success_selectors=("text=/candidate profile|application profile|continue application/i",),
+    invalid_credentials_selectors=(".iCIMS_Error", ".error", "text=/invalid password|incorrect password/i"),
+    signup_name_selectors=("input[name*='FirstName']", "input[name*='LastName']", "input[id*='FirstName']", "input[id*='LastName']"),
+    signup_email_selectors=("input[type='email']", "input[name='email']", "input[id*='Email']"),
+    signup_password_selectors=("input[type='password']", "input[name='password']", "input[id*='Password']"),
+    signup_submit_selectors=("button:has-text('Create Profile')", "input[type='submit']", "button[type='submit']"),
+    signup_success_selectors=("text=/verify your email|candidate profile|continue application/i",),
+    duplicate_account_selectors=("text=/account already exists|profile already exists|email already in use/i",),
+    account_recovery_selectors=("text=/forgot password|reset password/i", "a:has-text('Forgot Password')"),
+    review_boundary_selectors=("text=/review your application|application review/i",),
+    validation_selectors=(".iCIMS_Error", ".error", "[role='alert']"),
+    pause_triggers=("captcha", "mfa", "legacy iframe", "manual review", "duplicate account", "password reset"),
+    notes=("iCIMS account paths are supported only for modern form layouts; iframe-heavy recovery still pauses.",),
+)
