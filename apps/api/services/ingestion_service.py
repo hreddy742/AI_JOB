@@ -51,6 +51,32 @@ ADAPTERS: dict[str, Any] = {
     "jobspy": JobSpyAdapter(),
 }
 
+
+def build_adapter(source: str) -> Any:
+    """Return the registered adapter instance for a job source.
+
+    Raises KeyError with the list of registered sources if `source` has no
+    adapter — e.g. "jooble" is listed in JOB_COVERAGE_TIER1_SOURCES config
+    and TIER1_SOURCES but has no adapter implementation yet.
+    """
+    try:
+        return ADAPTERS[source]
+    except KeyError:
+        raise KeyError(
+            f"No adapter registered for source '{source}'. "
+            f"Registered sources: {sorted(ADAPTERS)}"
+        ) from None
+
+
+def adapter_factories() -> dict[str, Any]:
+    """Return the registered source -> adapter-instance mapping.
+
+    Used by admin routes to enumerate supported ingestion sources
+    (`adapter_factories().keys()`) and validate requested source names.
+    """
+    return ADAPTERS
+
+
 DEFAULT_INGESTION_SOURCES: tuple[str, ...] = (
     "remoteok",
     "arbeitnow",
