@@ -1,0 +1,28 @@
+from browser_agent_v1.providers.base import ProviderPlaybook
+
+PLAYBOOK = ProviderPlaybook(
+    provider="lever",
+    apply_entry_selectors=(".postings-btn-wrapper a", "a:has-text('Apply for this job')", "button:has-text('Apply')"),
+    resume_upload_selectors=("input[name='resume']", "input[name='coverLetter']", "input[type='file']"),
+    upload_confirmation_selectors=("text=/resume|cover letter/i", ".application-resume", "[data-qa='resume-upload']"),
+    screening_field_selectors=("label", "fieldset", ".application-question"),
+    submit_selectors=("button[type='submit']", "button:has-text('Submit Application')", "text=/review application/i"),
+    login_selectors=("input[type='email']", "input[name='email']", "button:has-text('Sign In')"),
+    signup_selectors=("a:has-text('Create account')", "button:has-text('Create account')"),
+    login_email_selectors=("input[type='email']", "input[name='email']", "input[autocomplete='username']"),
+    login_password_selectors=("input[type='password']", "input[name='password']", "input[autocomplete='current-password']"),
+    login_submit_selectors=("button:has-text('Sign In')", "button[type='submit']"),
+    login_success_selectors=("text=/application form|resume|submit application/i",),
+    invalid_credentials_selectors=(".application-error", ".error", "text=/incorrect password|invalid login/i"),
+    signup_name_selectors=("input[name='name']", "input[name='firstName']", "input[name='lastName']", "input[autocomplete='given-name']"),
+    signup_email_selectors=("input[type='email']", "input[name='email']", "input[autocomplete='email']"),
+    signup_password_selectors=("input[type='password']", "input[name='password']", "input[autocomplete='new-password']"),
+    signup_submit_selectors=("button:has-text('Create account')", "button:has-text('Continue')", "button[type='submit']"),
+    signup_success_selectors=("text=/application form|continue your application/i",),
+    duplicate_account_selectors=("text=/already have an account|email already in use|account already exists/i",),
+    account_recovery_selectors=("text=/forgot password|reset password/i",),
+    review_boundary_selectors=("text=/review application|application review/i",),
+    validation_selectors=(".error", ".application-error", "[aria-invalid='true']"),
+    pause_triggers=("captcha", "assessment redirect", "manual review", "duplicate account"),
+    notes=("Lever account handling remains narrow and pauses on assessment redirects or nonstandard widgets.",),
+)
