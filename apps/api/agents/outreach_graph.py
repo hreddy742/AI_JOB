@@ -85,10 +85,10 @@ async def compliance_node(state: OutreachState) -> OutreachState:
     """Score draft for compliance and outreach safety."""
 
     default_report = {
-        "score": 0.7,
-        "flags": [],
+        "score": 0.0,
+        "flags": ["compliance_review_unavailable"],
         "gdpr_risk": False,
-        "approved_to_send": True,
+        "approved_to_send": False,
     }
 
     try:

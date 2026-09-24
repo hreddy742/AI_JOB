@@ -51,9 +51,9 @@ async def _call_company_analyzer(company: str) -> dict[str, str]:
     """Infer company metadata via lightweight referral model."""
 
     fallback = {
-        "company_domain": f"{company.lower().replace(' ', '')}.com" if company else "",
-        "github_org": company.lower().replace(" ", "") if company else "",
-        "email_pattern": "firstname.lastname",
+        "company_domain": "",
+        "github_org": "",
+        "email_pattern": "",
     }
     try:
         async with httpx.AsyncClient() as client:
@@ -79,9 +79,9 @@ async def _call_company_analyzer(company: str) -> dict[str, str]:
             if not isinstance(parsed, dict):
                 return fallback
             return {
-                "company_domain": str(parsed.get("company_domain") or fallback["company_domain"]),
-                "github_org": str(parsed.get("github_org") or fallback["github_org"]),
-                "email_pattern": str(parsed.get("email_pattern") or "firstname.lastname"),
+                "company_domain": str(parsed.get("company_domain") or ""),
+                "github_org": str(parsed.get("github_org") or ""),
+                "email_pattern": str(parsed.get("email_pattern") or ""),
             }
     except (httpx.HTTPError, json.JSONDecodeError):
         return fallback
