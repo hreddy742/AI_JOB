@@ -26,7 +26,6 @@ from services.job_coverage.metrics import to_dashboard_payload
 from services.feature_flags import get_tenant_rerank_state, set_tenant_rerank_override
 
 from services.ingestion_service import adapter_factories, expire_old_jobs, run_default_ingestion_cycle, run_ingestion_for_sources
-from services.job_service import backfill_job_categories
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 _KNOWN_LLM_FLOWS = [
@@ -923,21 +922,6 @@ async def ingestion_health(
         "stale_after_minutes": stale_after_minutes,
         "sources": items,
     }
-
-
-@router.post("/backfill-categories")
-async def backfill_categories(
-    token: TokenPayload = Depends(get_current_token),
-    db: AsyncSession = Depends(get_db),
-) -> dict:
-    """Re-classify category/subcategory for all jobs that still have defaults."""
-
-    _admin_guard(token)
-    tenant_id = UUID(token.tenant_id)
-    await apply_tenant_rls(db, tenant_id)
-    typesense = get_typesense_client()
-    result = await backfill_job_categories(db, tenant_id, typesense)
-    return {"status": "ok", **result}
 
 
 @router.get("/tenants")
