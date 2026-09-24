@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import logging
 from datetime import UTC, datetime
 from uuid import UUID
@@ -20,12 +19,17 @@ from db.models.job import Job
 from db.models.resume import Resume
 from db.models.user_profile import UserProfile
 from schemas.copilot import (
+    CopilotApplyPlanRequest,
+    CopilotApplyPlanResponse,
     ChatSessionCreate,
     ChatSessionResponse,
     CopilotMessageRequest,
     CopilotModeUpdate,
     InterviewQuestion,
 )
+from services.copilot_retention import apply_session_retention, persist_recent_turns
+from services.ranking_service import build_todays_shortlist
+from services.resume_service import create_tailoring_task
 
 router = APIRouter(prefix="/copilot", tags=["copilot"])
 logger = logging.getLogger(__name__)
@@ -181,7 +185,11 @@ async def send_message(
         # Send an immediate SSE comment so clients don't time out waiting for first byte.
         yield ": stream-start\n\n"
         try:
-            async for chunk in run_copilot_turn(session, payload.message, profile, resume, job):
+            try:
+                stream = run_copilot_turn(session, payload.message, profile, resume, job, db=db)
+            except TypeError:
+                stream = run_copilot_turn(session, payload.message, profile, resume, job)
+            async for chunk in stream:
                 safe_chunk = chunk.replace("\n", "\\n")
                 yield f"data: {safe_chunk}\n\n"
         except Exception:
@@ -189,7 +197,10 @@ async def send_message(
             yield "data: Copilot is temporarily unavailable. Please try again in a moment.\n\n"
         finally:
             session.updated_at = datetime.now(UTC)
+            await persist_recent_turns(db, session, tenant_id)
+            await apply_session_retention(db, session, tenant_id)
             await db.commit()
+            yield "data: [DONE]\n\n"
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 
@@ -245,3 +256,44 @@ async def switch_mode(
     await db.commit()
     await db.refresh(session)
     return ChatSessionResponse.model_validate(session)
+
+
+@router.post("/sessions/{id}/apply-plan", response_model=CopilotApplyPlanResponse)
+async def build_apply_plan(
+    id: UUID,
+    payload: CopilotApplyPlanRequest,
+    token: TokenPayload = Depends(get_current_token),
+    db: AsyncSession = Depends(get_db),
+) -> CopilotApplyPlanResponse:
+    """Build today's apply plan and optionally trigger tailoring tasks."""
+
+    user_id = _uuid(token.sub)
+    tenant_id = _uuid(token.tenant_id)
+    _ = await _get_session_for_user(db, id, user_id, tenant_id)
+    await apply_tenant_rls(db, tenant_id)
+
+    shortlist = await build_todays_shortlist(db=db, tenant_id=tenant_id, user_id=user_id, limit=max(1, payload.max_jobs))
+    items = []
+    for idx, candidate in enumerate(shortlist):
+        task_id = None
+        if payload.auto_tailor and payload.resume_id is not None and idx < max(0, payload.tailor_top_n):
+            try:
+                task_id = await create_tailoring_task(
+                    db=db,
+                    token=token,
+                    resume_id=payload.resume_id,
+                    job_id=UUID(str(candidate["id"])),
+                )
+            except Exception:
+                task_id = None
+        items.append(
+            {
+                "job_id": UUID(str(candidate["id"])),
+                "title": str(candidate.get("title") or ""),
+                "company": str(candidate.get("company") or ""),
+                "score": float(candidate.get("score") or 0.0),
+                "reasons": list(candidate.get("reasons") or []),
+                "tailoring_task_id": task_id,
+            }
+        )
+    return CopilotApplyPlanResponse(generated_at=datetime.now(UTC), items=items)
