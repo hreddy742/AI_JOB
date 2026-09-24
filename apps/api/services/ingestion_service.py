@@ -40,6 +40,14 @@ ADAPTERS: dict[str, Any] = {
     "arbeitnow": ArbeitnowAdapter(),
     "the_muse": TheMuseAdapter(api_key=settings.THE_MUSE_API_KEY),
     "usajobs": USAJobsAdapter(api_key=settings.USAJOBS_API_KEY),
+    # jobspy is registered so it CAN be used, but is intentionally excluded from
+    # DEFAULT_INGESTION_SOURCES / PERSONALIZED_INGESTION_SOURCES below — see the
+    # Core Safeguards note in README.md. It scrapes third-party job boards
+    # (LinkedIn/Indeed/Glassdoor/ZipRecruiter via python-jobspy) rather than
+    # using an official API/feed like every other adapter here, which carries
+    # real Terms-of-Service risk on those platforms. Only ever run it by
+    # explicitly passing source_names=["jobspy"] AND setting JOBSPY_SITE_NAMES
+    # yourself — DEFAULT_JOBSPY_SITE_NAMES is intentionally empty.
     "jobspy": JobSpyAdapter(),
 }
 
@@ -51,7 +59,6 @@ DEFAULT_INGESTION_SOURCES: tuple[str, ...] = (
     "adzuna",
     "the_muse",
     "usajobs",
-    "jobspy",
 )
 
 SEARCH_QUERIES: tuple[str, ...] = (
@@ -69,12 +76,11 @@ SEARCH_QUERIES: tuple[str, ...] = (
 
 PERSONALIZED_INGESTION_SOURCES: tuple[str, ...] = DEFAULT_INGESTION_SOURCES
 
-DEFAULT_JOBSPY_SITE_NAMES: tuple[str, ...] = (
-    "linkedin",
-    "indeed",
-    "zip_recruiter",
-    "glassdoor",
-)
+# Intentionally empty — jobspy must never scrape a real job board unless a
+# deployer explicitly sets JOBSPY_SITE_NAMES themselves, with full awareness
+# that python-jobspy scrapes rather than using an official API. See the note
+# on the "jobspy" entry in ADAPTERS above and README.md's Core Safeguards.
+DEFAULT_JOBSPY_SITE_NAMES: tuple[str, ...] = ()
 
 DEFAULT_GREENHOUSE_BOARD_TOKENS: tuple[str, ...] = (
     "airbnb",
@@ -487,8 +493,15 @@ async def _ingest_source(
 
     if source_name == "jobspy":
         queries = tuple(search_queries) if search_queries else _default_queries_for_source(source_name)
+        site_names = jobspy_site_names()
+        if not site_names:
+            logger.warning(
+                "jobspy_skipped_no_sites",
+                extra={"extra": {"reason": "JOBSPY_SITE_NAMES not set — jobspy never runs without an explicit opt-in"}},
+            )
+            return 0
         for query in queries:
-            for site_name in jobspy_site_names():
+            for site_name in site_names:
                 inserted += await _ingest_from_adapter_pages(
                     adapter,
                     db,
