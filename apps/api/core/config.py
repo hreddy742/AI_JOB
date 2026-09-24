@@ -2,11 +2,13 @@
 
 from functools import lru_cache
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """Runtime settings loaded from environment variables."""
+
+    model_config = SettingsConfigDict(env_file=".env")
 
     DATABASE_URL: str
     REDIS_URL: str
@@ -98,11 +100,6 @@ class Settings(BaseSettings):
     JOBSPY_SITE_NAMES: str = ""
 
     ENVIRONMENT: str = "development"
-
-    class Config:
-        """Pydantic settings config."""
-
-        env_file = ".env"
 
 
 @lru_cache(maxsize=1)
