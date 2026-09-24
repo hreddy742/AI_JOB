@@ -1,0 +1,28 @@
+from browser_agent_v1.providers.base import ProviderPlaybook
+
+PLAYBOOK = ProviderPlaybook(
+    provider="generic",
+    apply_entry_selectors=("button:has-text('Apply')", "a:has-text('Apply')", "input[type='submit']"),
+    resume_upload_selectors=("input[type='file']",),
+    upload_confirmation_selectors=("[data-testid*='resume']", ".resume", "[aria-live='polite']", "text=/uploaded|attach|resume/i"),
+    screening_field_selectors=("label", "legend", "[role='group']"),
+    submit_selectors=("button:has-text('Submit')", "input[type='submit']", "button:has-text('Finish')", "text=/review|confirm/i"),
+    login_selectors=("input[type='email']", "input[name='email']", "#email", "button:has-text('Sign in')", "button:has-text('Log in')"),
+    signup_selectors=("a:has-text('Create account')", "button:has-text('Sign up')", "button:has-text('Create account')"),
+    login_email_selectors=("input[type='email']", "input[name='email']", "#email", "input[autocomplete='username']"),
+    login_password_selectors=("input[type='password']", "input[name='password']", "input[autocomplete='current-password']"),
+    login_submit_selectors=("button:has-text('Sign in')", "button:has-text('Log in')", "button[type='submit']"),
+    login_success_selectors=("text=/my profile|account settings|application progress|continue application/i",),
+    invalid_credentials_selectors=("text=/incorrect password|invalid credentials|email or password is incorrect/i", "[role='alert']"),
+    signup_name_selectors=("input[name='first_name']", "input[name='last_name']", "input[autocomplete='given-name']", "input[autocomplete='family-name']"),
+    signup_email_selectors=("input[type='email']", "input[name='email']", "input[autocomplete='email']"),
+    signup_password_selectors=("input[type='password']", "input[name='password']", "input[autocomplete='new-password']"),
+    signup_submit_selectors=("button:has-text('Create account')", "button:has-text('Sign up')", "button[type='submit']"),
+    signup_success_selectors=("text=/account created|continue your application|start your application/i",),
+    duplicate_account_selectors=("text=/already have an account|account already exists|email already in use/i",),
+    account_recovery_selectors=("text=/forgot password|reset your password|recover your account/i",),
+    review_boundary_selectors=("text=/review your application|review application|application summary/i",),
+    validation_selectors=("[aria-invalid='true']", ".error", "[role='alert']"),
+    pause_triggers=("captcha", "mfa", "verification", "duplicate account", "password reset", "unsupported widget"),
+    notes=("Generic playbook supports only low-risk field entry and review detection.",),
+)
