@@ -1,36 +1,26 @@
-"""Structured JSON logging setup."""
-
-import json
 import logging
-from datetime import UTC, datetime
-from typing import Any
+import structlog
 
 
-class JsonFormatter(logging.Formatter):
-    """Format logs as JSON objects."""
+def configure_logging(environment: str = "development") -> None:
+    """Configure structlog-backed logging for API and workers."""
 
-    def format(self, record: logging.LogRecord) -> str:
-        """Render the given record as a JSON string."""
+    renderer = (
+        structlog.processors.JSONRenderer()
+        if environment == "production"
+        else structlog.dev.ConsoleRenderer(colors=True)
+    )
 
-        payload: dict[str, Any] = {
-            "ts": datetime.now(UTC).isoformat(),
-            "level": record.levelname,
-            "logger": record.name,
-            "message": record.getMessage(),
-        }
-        if record.exc_info:
-            payload["exception"] = self.formatException(record.exc_info)
-        if hasattr(record, "extra") and isinstance(record.extra, dict):
-            payload.update(record.extra)
-        return json.dumps(payload, ensure_ascii=True)
-
-
-def configure_logging(level: int = logging.INFO) -> None:
-    """Configure root logger with JSON output."""
-
-    handler = logging.StreamHandler()
-    handler.setFormatter(JsonFormatter())
-    root = logging.getLogger()
-    root.handlers.clear()
-    root.setLevel(level)
-    root.addHandler(handler)
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    structlog.configure(
+        processors=[
+            structlog.contextvars.merge_contextvars,
+            structlog.processors.add_log_level,
+            structlog.processors.TimeStamper(fmt="iso"),
+            structlog.processors.StackInfoRenderer(),
+            structlog.processors.format_exc_info,
+            renderer,
+        ],
+        wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
+        cache_logger_on_first_use=True,
+    )
