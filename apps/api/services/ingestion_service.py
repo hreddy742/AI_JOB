@@ -56,8 +56,7 @@ def build_adapter(source: str) -> Any:
     """Return the registered adapter instance for a job source.
 
     Raises KeyError with the list of registered sources if `source` has no
-    adapter — e.g. "jooble" is listed in JOB_COVERAGE_TIER1_SOURCES config
-    and TIER1_SOURCES but has no adapter implementation yet.
+    registered adapter implementation.
     """
     try:
         return ADAPTERS[source]

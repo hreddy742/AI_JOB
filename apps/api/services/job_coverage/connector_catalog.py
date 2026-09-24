@@ -19,7 +19,6 @@ TIER1_SOURCES: tuple[str, ...] = (
     "arbeitnow",
     "remoteok",
     "adzuna",
-    "jooble",
 )
 
 TIER2_ATS_SOURCES: tuple[str, ...] = tuple(supported_ats_types())

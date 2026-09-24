@@ -108,7 +108,6 @@ class Settings(BaseSettings):
     # Source APIs / connectors
     ADZUNA_APP_ID: str = ""
     ADZUNA_API_KEY: str = ""
-    JOOBLE_API_KEY: str = ""
     CAREERJET_API_KEY: str = ""
     USAJOBS_API_KEY: str = ""
     USAJOBS_USER_AGENT: str = ""
@@ -194,7 +193,7 @@ class Settings(BaseSettings):
     STREAM_MAX_ATTEMPTS: int = 5
     JOB_COVERAGE_ENABLED: bool = True
     JOB_COVERAGE_SOURCE_CONCURRENCY: int = 4
-    JOB_COVERAGE_TIER1_SOURCES: str = "greenhouse,lever,usajobs,arbeitnow,remoteok,adzuna,jooble"
+    JOB_COVERAGE_TIER1_SOURCES: str = "greenhouse,lever,usajobs,arbeitnow,remoteok,adzuna"
     JOB_COVERAGE_DISCOVERY_CRON_MINUTES: int = 120
 
     # Environment / observability

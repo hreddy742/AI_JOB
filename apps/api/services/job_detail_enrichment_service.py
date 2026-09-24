@@ -15,7 +15,6 @@ from db.session import AsyncSessionFactory
 
 HIGH_VOLUME_SOURCES: set[str] = {
     "adzuna",
-    "jooble",
     "careerjet",
     "jobspy",
     "hackernews_whos_hiring",
