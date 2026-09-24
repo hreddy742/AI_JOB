@@ -2,6 +2,14 @@
 
 Production-grade multi-tenant AI job application automation platform.
 
+## What this is
+
+A job search platform where the AI does the tedious, error-prone parts —
+tailoring a resume per job description, drafting outreach, discovering
+referral contacts, aggregating listings from dozens of sources — while
+every action that matters (submitting an application, sending outreach)
+stays a deliberate human decision.
+
 ## Stack
 
 - Backend: FastAPI (Python 3.12, async)
@@ -14,13 +22,54 @@ Production-grade multi-tenant AI job application automation platform.
 - Browser automation: Playwright
 - Object storage: MinIO
 
+## Agent architecture
+
+Five agent modules in `apps/api/agents/`, all LangGraph state machines
+calling a local Ollama model — not single-prompt wrappers:
+
+- **`resume_graph.py`** — resume tailoring. 4-node graph: knowledge
+  (extracts JD requirements) → writer (tailors the resume) → reviewer
+  (audits for fabrication) → supervisor (approve / retry up to 3x /
+  reject). Anti-hallucination is enforced two ways: a strict "never
+  invent" prompt, and a programmatic diff (`_programmatic_flags`) that
+  compares numbers, company names, and skills between the original and
+  tailored text independently of what the LLM claims.
+- **`referral_graph.py`** — referral discovery. 5-node graph: infers a
+  company's domain/GitHub org/email pattern via LLM → discovers real
+  contacts through the public GitHub API → infers likely emails from
+  name patterns → scores contact usefulness → stores sorted by
+  confidence. Every contact is persisted with `is_verified: False`
+  until a human confirms it.
+- **`outreach_graph.py`** — outreach drafting. Draft generation is
+  template-based (not LLM-authored) specifically to avoid hallucinated
+  claims; a second LLM call acts as a compliance reviewer, scoring the
+  draft for spam signals, GDPR risk, and CAN-SPAM compliance before
+  it's allowed to be sent.
+- **`copilot_chain.py`** — conversational career coach (interview prep,
+  resume review, job strategy), streamed, with mode-specific system
+  prompts grounded in the user's actual resume/profile.
+- **`supervisor.py`** — platform health monitor. Not itself LLM-driven;
+  it runs periodic rule-based checks (ingestion lag, Typesense sync lag,
+  referral failure rate, and whether the copilot's Ollama model is
+  actually reachable) and raises severity-tiered alerts.
+
 ## Core Safeguards
 
-- No scraping of LinkedIn, Indeed, Glassdoor
-- No hallucinated resume edits (reviewer + supervisor enforcement)
-- No auto-submit of job applications (human submit required)
-- No auto-send outreach without explicit human approval
-- All referral contacts stored as unverified until user confirmation
+- **No scraping of LinkedIn, Indeed, or Glassdoor by default.** Job
+  ingestion (`apps/api/services/ingestion_service.py`) only auto-runs
+  official APIs/feeds — Greenhouse, Lever, RemoteOK, Adzuna, Arbeitnow,
+  The Muse, USAJobs. A `jobspy` adapter exists (wraps `python-jobspy`,
+  which *does* scrape LinkedIn/Indeed/Glassdoor/ZipRecruiter) but is
+  excluded from the default and personalized source sets and defaults
+  to zero target sites (`JOBSPY_SITE_NAMES` is empty). It only runs at
+  all if a deployer explicitly sets that variable and explicitly adds
+  `"jobspy"` to a source list — an informed opt-in, never a default,
+  because scraping those platforms carries real Terms-of-Service risk.
+- No hallucinated resume edits (reviewer + supervisor enforcement, see
+  Agent architecture above).
+- No auto-submit of job applications (human submit required).
+- No auto-send outreach without explicit human approval.
+- All referral contacts stored as unverified until user confirmation.
 
 ## Repository Layout
 
