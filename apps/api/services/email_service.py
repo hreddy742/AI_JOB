@@ -6,7 +6,10 @@ import logging
 from datetime import UTC, datetime
 from email.message import EmailMessage
 
-import aiosmtplib
+try:
+    import aiosmtplib
+except Exception:  # pragma: no cover - optional runtime dependency in slim test envs
+    aiosmtplib = None  # type: ignore[assignment]
 
 from core.config import settings
 
@@ -56,6 +59,9 @@ def _base_template(content: str) -> str:
 
 
 async def _send_html_email(to_email: str, subject: str, html: str) -> bool:
+    if aiosmtplib is None:
+        logger.error("email_send_failed_missing_aiosmtplib", extra={"to": _mask_email(to_email), "subject": subject})
+        return False
     if not settings.SMTP_FROM_EMAIL:
         logger.error("email_send_failed_missing_from", extra={"to": _mask_email(to_email), "subject": subject})
         return False
@@ -142,3 +148,83 @@ async def send_welcome_email(to_email: str, full_name: str) -> bool:
 <p><a href=\"{dashboard}\" style=\"display:inline-block;background:#2563eb;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;font-weight:700;\">Go to Dashboard</a></p>
 """
     return await _send_html_email(to_email, f"Welcome to Apex Apply, {first_name}!", _base_template(content))
+
+
+async def send_job_alert_email(
+    *,
+    to_email: str,
+    full_name: str,
+    job_title: str,
+    company: str,
+    location: str,
+    job_url: str,
+) -> bool:
+    """Deliver one job-match alert email."""
+
+    first_name = full_name.split()[0] if full_name else "there"
+    safe_url = job_url or settings.FRONTEND_URL
+    content = f"""
+<p>Hi {first_name},</p>
+<p>New matching role found:</p>
+<p><strong>{job_title}</strong> at <strong>{company}</strong><br />{location}</p>
+<p><a href=\"{safe_url}\" style=\"display:inline-block;background:#2563eb;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;font-weight:700;\">Open Job</a></p>
+"""
+    return await _send_html_email(to_email, f"New match: {job_title} at {company}", _base_template(content))
+
+
+async def send_browser_agent_pause_email(
+    *,
+    to_email: str,
+    full_name: str,
+    job_title: str,
+    company: str,
+    run_id: str,
+    prompt: str,
+) -> bool:
+    first_name = full_name.split()[0] if full_name else "there"
+    url = f"{settings.FRONTEND_URL}/applications?browserAgentRunId={run_id}"
+    content = f"""
+<p>Hi {first_name},</p>
+<p>Your Browser Agent beta run for <strong>{job_title}</strong> at <strong>{company}</strong> needs help.</p>
+<p style=\"padding:12px;background:#fff7ed;border:1px solid #fdba74;border-radius:8px;\"><strong>Action needed:</strong> {prompt}</p>
+<p><a href=\"{url}\" style=\"display:inline-block;background:#2563eb;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;font-weight:700;\">Open Application Tracker</a></p>
+"""
+    return await _send_html_email(to_email, f"Browser Agent needs help for {job_title}", _base_template(content))
+
+
+async def send_browser_agent_review_email(
+    *,
+    to_email: str,
+    full_name: str,
+    job_title: str,
+    company: str,
+    run_id: str,
+) -> bool:
+    first_name = full_name.split()[0] if full_name else "there"
+    url = f"{settings.FRONTEND_URL}/applications?browserAgentRunId={run_id}"
+    content = f"""
+<p>Hi {first_name},</p>
+<p>Your Browser Agent beta run for <strong>{job_title}</strong> at <strong>{company}</strong> is ready for review before submit.</p>
+<p><a href=\"{url}\" style=\"display:inline-block;background:#2563eb;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;font-weight:700;\">Review Browser Agent Run</a></p>
+"""
+    return await _send_html_email(to_email, f"Browser Agent review ready for {job_title}", _base_template(content))
+
+
+async def send_browser_agent_failed_email(
+    *,
+    to_email: str,
+    full_name: str,
+    job_title: str,
+    company: str,
+    run_id: str,
+    error_detail: str,
+) -> bool:
+    first_name = full_name.split()[0] if full_name else "there"
+    url = f"{settings.FRONTEND_URL}/browser-agent-v1?runId={run_id}"
+    content = f"""
+<p>Hi {first_name},</p>
+<p>Your Browser Agent beta run for <strong>{job_title}</strong> at <strong>{company}</strong> stopped before completion.</p>
+<p style=\"padding:12px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;color:#991b1b;\">{error_detail}</p>
+<p><a href=\"{url}\" style=\"display:inline-block;background:#2563eb;color:#fff;padding:12px 18px;text-decoration:none;border-radius:8px;font-weight:700;\">Open Browser Agent Timeline</a></p>
+"""
+    return await _send_html_email(to_email, f"Browser Agent run failed for {job_title}", _base_template(content))
